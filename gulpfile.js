@@ -9,8 +9,16 @@
  gulp/tasks/default.js specifies the default set of tasks to run
  when you run `gulp`.
  */
-
+var gulp = require('gulp');
 var requireDir = require('require-dir');
 
 // Require all tasks in gulp/tasks, including subfolders
 requireDir('./gulp/tasks', { recurse: true });
+
+gulp.task('start', function () {
+ nodemon({
+  script: 'server.js'
+  , ext: 'js html'
+  , env: { 'NODE_ENV': 'development' }
+ })
+})

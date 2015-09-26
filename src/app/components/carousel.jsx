@@ -14,14 +14,14 @@ var CarouselComp = React.createClass({
             </div>
         </CarouselItem>
         <CarouselItem>
-            <img className="carousel-img" src="http://4soles.info/wp-content/uploads/2015/03/vino-tinto.jpg"/>
+            <img className="carousel-img" src="http://www.fondos7.net/wallpaper-original/wallpapers/un-buen-vino-y-uvas-10009.jpg"/>
             <div className="caption">
                 <h3>Second slide label</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </CarouselItem>
         <CarouselItem>
-            <img className="carousel-img" src="http://4soles.info/wp-content/uploads/2015/03/vino-tinto.jpg"/>
+            <img className="carousel-img" src="http://www.caminosdelvino.com/cache/vinos8.jpg_640_640.jpg"/>
             <div className="caption">
                 <h3>Third slide label</h3>
                 <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>

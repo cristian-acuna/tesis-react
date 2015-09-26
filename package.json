@@ -3,6 +3,7 @@
   "version": "1.0.4",
   "author": "John Gleason <jogleasonjr@gmail.com>",
   "description": "Sample project that uses react-bootstrap with reactify, browserify, and browser-sync.",
+  "main": "server.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/jogleasonjr/react-bootstrap-starter.git"
@@ -32,6 +33,10 @@
     "underscore": "^1.7.0",
     "vinyl-source-stream": "^1.0.0",
     "watchify": "^2.2.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "dependencies": {
     "react-bootstrap": "0.13.3",

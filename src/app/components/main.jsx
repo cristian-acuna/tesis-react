@@ -2,8 +2,11 @@ var React = require('react');
 var Bootstrap = require('react-bootstrap');
 
 var Navigation = require('./navigation.jsx');
-var Home = require('./home-container.jsx')
+var Home = require('./home-container.jsx');
+var Login = require('./login.jsx');
 var Headroom = require('react-headroom');
+var VinoItem = require('./vinos-list-item.jsx');
+
 
 var Main = React.createClass({
 
@@ -39,16 +42,27 @@ var tabList = [
     },
     {
         'content':
-                <img src="http://s.mlkshk.com/r/103AG" />
+                <Login />
     },
     {
         'content':
-                <img src="http://s.mlkshk.com/r/JAUD" />
-    },
+            <div>
+                <VinoItem />
+                <VinoItem />
+                <VinoItem />
+                <VinoItem />
+                <VinoItem />
+                <VinoItem />
+            </div>
+                },
     {
         'content':
             <div className="leo">
                 <img src="http://s.mlkshk.com/r/ZJPL" />
+                <img src="http://s.mlkshk.com/r/ZJPL" />
+                <img src="http://s.mlkshk.com/r/ZJPL" />
+                <img src="http://s.mlkshk.com/r/ZJPL" />
+
             </div>
     }
 ];
