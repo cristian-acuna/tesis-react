@@ -1,14 +1,49 @@
-(function () {
-    var React = require('react'),
-        injectTapEventPlugin = require("react-tap-event-plugin"),
-        Main = require('./components/main.jsx');
+    var React = require('react');
+    var Bootstrap = require('react-bootstrap');
 
-    //Needed for React Developer Tools
-    window.React = React;
-    injectTapEventPlugin();
+    var Navigation = require('./components/navigation.jsx');
+    var Busqueda = require('./components/busqueda.jsx')
+    var Home = require('./components/home.jsx');
+    var Login = require('./components/login.jsx');
+    var Headroom = require('react-headroom');
 
-    // Render the main app react component into the document body.
-    // For more details see: https://facebook.github.io/react/docs/top-level-api.html#react.render
-    React.render(<Main />, document.body);
+    var Router = require('react-router').Router;
+    var Route = require('react-router').Route;
+    var history = require('react-router/lib/History').default;
 
-})();
+
+    var App = React.createClass({
+
+        getInitialState: function () {
+            return {
+                currentTab: 0
+            };
+        },
+
+        changeTab: function (index) {
+            this.setState({currentTab: index});
+        },
+
+        render: function () {
+            return (
+                <div>
+                    <Headroom>
+                        <Navigation projectName="Somellier" changeTab={this.changeTab}/>
+                    </Headroom>
+                    <div className="starter-template">
+                        <Home/>
+                    </div>
+                </div>
+            );
+        }
+    });
+
+    React.render((
+        <Router history={history}>
+            <Route path="login" component={Login}/>
+            <Route path="/" component={App}/>
+            <Route path="/busqueda" component={Busqueda}/>
+            <Route path="/wishlist" component={App}/>
+
+        </Router>
+    ), document.getElementById('content'));

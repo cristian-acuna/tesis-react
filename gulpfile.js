@@ -14,11 +14,3 @@ var requireDir = require('require-dir');
 
 // Require all tasks in gulp/tasks, including subfolders
 requireDir('./gulp/tasks', { recurse: true });
-
-gulp.task('start', function () {
- nodemon({
-  script: 'server.js'
-  , ext: 'js html'
-  , env: { 'NODE_ENV': 'development' }
- })
-})

@@ -5,6 +5,9 @@ var Nav = Bootstrap.Nav;
 var NavItem = Bootstrap.NavItem;
 var DropdownButton = Bootstrap.DropdownButton;
 var MenuItem = Bootstrap.MenuItem;
+var Link = require('react-router').Link;
+var Router = require('react-router');
+
 
 
 var Navigation = React.createClass({
@@ -16,11 +19,11 @@ var Navigation = React.createClass({
     render: function() {
         return (
             <Navbar className="navbar navbar-inverse">
-                <a className="navigation-title" href="\">{this.props.projectName}</a>
+                <a className="navigation-title" href="/">{this.props.projectName}</a>
                 <Nav className="nav navbar-nav">
-                    <NavItem onSelect={this.handleClick.bind(this, 0)}><span className="icon-nav glyphicon glyphicon-home"/>Home</NavItem>
-                    <NavItem onSelect={this.handleClick.bind(this, 1)}><span className="icon-nav glyphicon glyphicon-search"/>Busqueda</NavItem>
-                    <NavItem onSelect={this.handleClick.bind(this, 2)}><span className="icon-nav glyphicon glyphicon-glass"/>Wishlist</NavItem>
+                    <Link className="bar-item" to={`/`}><span className="icon-nav glyphicon glyphicon-home"/>Home</Link>
+                    <Link className="bar-item" to={`/busqueda`}><span className="icon-nav glyphicon glyphicon-search"/>Busqueda</Link>
+                    <Link className="bar-item" to={`/`}><span className="icon-nav glyphicon glyphicon-glass"/>Wishlist</Link>
                     <DropdownButton eventKey={3} title="Mis Vinos">
                         <MenuItem onSelect={this.handleClick.bind(this, 3)}>Agregar ...</MenuItem>
                         <MenuItem eventKey="2">Recomendacion</MenuItem>
@@ -30,7 +33,7 @@ var Navigation = React.createClass({
                     </DropdownButton>
                 </Nav>
                 <Nav className="nav navbar-nav navbar-right">
-                    <NavItem onSelect={this.handleClick.bind(this, 1)}><span className="icon-nav glyphicon glyphicon-user"/>Usuario</NavItem>
+                    <Link className="bar-item" to={`/login`}><span className="icon-nav glyphicon glyphicon-user"/>Usuario</Link>
                 </Nav>
 
             </Navbar>
