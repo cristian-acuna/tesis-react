@@ -1,0 +1,98 @@
+[
+  {
+    "provincia": "Capital Federal",
+    "value": 1
+  },
+  {
+    "provincia": "Buenos Aires",
+    "value": 2
+  },
+  {
+    "provincia": "Catamarca",
+    "value": 3
+  },
+  {
+    "provincia": "Chaco",
+    "value": 4
+  },
+  {
+    "provincia": "Chubut",
+    "value": 5
+  },
+  {
+    "provincia": "Cordoba",
+    "value": 6
+  },
+  {
+    "provincia": "Corrientes",
+    "value": 7
+  },
+  {
+    "provincia": "Entre Rios",
+    "value": 8
+  },
+  {
+    "provincia": "Formosa",
+    "value": 9
+  },
+  {
+    "provincia": "Jujuy",
+    "value": 10
+  },
+  {
+    "provincia": "La Pampa",
+    "value": 11
+  },
+  {
+    "provincia": "La Rioja",
+    "value": 12
+  },
+  {
+    "provincia": "Mendoza",
+    "value": 13
+  },
+  {
+    "provincia": "Misiones",
+    "value": 14
+  },
+  {
+    "provincia": "Neuquen",
+    "value": 15
+  },
+  {
+    "provincia": "Rio Negro",
+    "value": 16
+  },
+  {
+    "provincia": "Salta",
+    "value": 17
+  },
+  {
+    "provincia": "San Juan",
+    "value": 18
+  },
+  {
+    "provincia": "Santa Cruz",
+    "value": 19
+  },
+  {
+    "provincia": "Santa Fe",
+    "value": 20
+  },
+  {
+    "provincia": "Santiago del Estero",
+    "value": 21
+  },
+  {
+    "provincia": "Tierra del Fuego",
+    "value": 22
+  },
+  {
+    "provincia": "Tucuman",
+    "value": 23
+  },
+  {
+    "provincia": "San Luis",
+    "value": 25
+  }
+]

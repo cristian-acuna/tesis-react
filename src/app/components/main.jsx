@@ -1,70 +1,82 @@
 var React = require('react');
 var Bootstrap = require('react-bootstrap');
+var Reflux = require('reflux');
+var UserStore = require('../stores/userstore');
 
 var Navigation = require('./navigation.jsx');
-var Home = require('./home-container.jsx');
+var Busqueda = require('./busqueda.jsx')
+var Home = require('./home.jsx');
 var Login = require('./login.jsx');
 var Headroom = require('react-headroom');
-var VinoItem = require('./vinos-list-item.jsx');
+var Registro = require('./registro.jsx');
+
+
+var Modal = require('react-bootstrap').Modal;
+var ModalHeader = require('react-bootstrap').ModalHeader;
+
+var Button = require('react-bootstrap').Button;
+
+var Router = require('react-router').Router;
+var IndexRoute = require('react-router').IndexRoute;
+var Route = require('react-router').Route;
+var history = require('react-router/lib/History').default;
 
 
 var Main = React.createClass({
 
+    mixins: [Reflux.listenTo(UserStore, 'onLoginUser')],
+
     getInitialState: function () {
         return {
-            tabList: tabList,
-            currentTab: 0
+            currentTab: 0,
+            userSession: {},
+            showModal: true
         };
     },
 
-    changeTab: function(index) {
-        this.setState({ currentTab: index });
+    onLoginUser: function(usuario) {
+        this.setState({ userSession: usuario });
+        this.close();
+    },
+
+    close() {
+        this.setState({ showModal: false });
+    },
+
+    open() {
+        this.setState({ showModal: true });
+    },
+
+    changeTab: function (index) {
+        this.setState({currentTab: index});
     },
 
     render: function () {
+        const { pathname } = this.props.location
+
         return (
             <div>
+                <Modal backdrop="static" keyboard={false} show={this.state.showModal} className="login-modal" onHide={this.close}>
+                    <Login close={this.close}/>
+                </Modal>
                 <Headroom>
-                    <Navigation projectName="Somellier" changeTab={this.changeTab} tabList={this.state.tabList}/>
+                    <Navigation user={this.state.userSession} projectName="Somellier" changeTab={this.changeTab}/>
                 </Headroom>
-                <div className="starter-template">
-                    {this.state.tabList[this.state.currentTab].content}
+                <div className="section-container">
+                    {React.cloneElement(this.props.children || <div />, { key: pathname })}
                 </div>
             </div>
         );
     }
 });
 
-var tabList = [
-    {
-        'content':
-                <Home />
-    },
-    {
-        'content':
-                <Login />
-    },
-    {
-        'content':
-            <div>
-                <VinoItem />
-                <VinoItem />
-                <VinoItem />
-                <VinoItem />
-                <VinoItem />
-                <VinoItem />
-            </div>
-                },
-    {
-        'content':
-            <div className="leo">
-                <img src="http://s.mlkshk.com/r/ZJPL" />
-                <img src="http://s.mlkshk.com/r/ZJPL" />
-                <img src="http://s.mlkshk.com/r/ZJPL" />
-                <img src="http://s.mlkshk.com/r/ZJPL" />
+React.render((
+    <Router history={history}>
+        <Route path="/" component={Main}>
+            <IndexRoute component={Home}/>
+            <Route path="/busqueda" component={Busqueda}/>
+            <Route path="/registro" component={Registro}/>
+        </Route>
 
-            </div>
-    }
-];
-
-module.exports = Main;
+    </Router>
+), document.getElementById('content'));

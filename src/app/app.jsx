@@ -1,23 +1,51 @@
     var React = require('react');
     var Bootstrap = require('react-bootstrap');
+    var Reflux = require('reflux');
+    var UserStore = require('./stores/userstore');
 
     var Navigation = require('./components/navigation.jsx');
     var Busqueda = require('./components/busqueda.jsx')
     var Home = require('./components/home.jsx');
     var Login = require('./components/login.jsx');
     var Headroom = require('react-headroom');
+    var Registro = require('./components/registro.jsx');
+
+
+    var Modal = require('react-bootstrap').Modal;
+    var ModalHeader = require('react-bootstrap').ModalHeader;
+
+    var Button = require('react-bootstrap').Button;
 
     var Router = require('react-router').Router;
+    var IndexRoute = require('react-router').IndexRoute;
     var Route = require('react-router').Route;
     var history = require('react-router/lib/History').default;
 
 
     var App = React.createClass({
 
+        mixins: [Reflux.listenTo(UserStore, 'onLoginUser')],
+
         getInitialState: function () {
             return {
-                currentTab: 0
+                currentTab: 0,
+                userSession: {},
+                showModal: true
             };
+        },
+
+        onLoginUser: function(usuario) {
+            console.log("LOGEADO!!!!!!!!!!!!!!!!!!!!!");
+            this.setState({ userSession: usuario });
+            this.close();
+        },
+
+        close() {
+            this.setState({ showModal: false });
+        },
+
+        open() {
+            this.setState({ showModal: true });
         },
 
         changeTab: function (index) {
@@ -25,13 +53,18 @@
         },
 
         render: function () {
+            const { pathname } = this.props.location
+
             return (
                 <div>
+                    <Modal keyboard={false} show={this.state.showModal} className="login-modal" onHide={this.close}>
+                        <Login onClose={this.close}/>
+                    </Modal>
                     <Headroom>
-                        <Navigation projectName="Somellier" changeTab={this.changeTab}/>
+                        <Navigation user={this.state.userSession} projectName="Somellier" changeTab={this.changeTab}/>
                     </Headroom>
-                    <div className="starter-template">
-                        <Home/>
+                    <div className="section-container">
+                        {React.cloneElement(this.props.children || <div />, { key: pathname })}
                     </div>
                 </div>
             );
@@ -40,10 +73,10 @@
 
     React.render((
         <Router history={history}>
-            <Route path="login" component={Login}/>
-            <Route path="/" component={App}/>
-            <Route path="/busqueda" component={Busqueda}/>
-            <Route path="/wishlist" component={App}/>
-
+            <Route path="/" component={App}>
+                <IndexRoute component={Home}/>
+                <Route path="/busqueda" component={Busqueda}/>
+                <Route path="/registro" component={Registro}/>
+            </Route>
         </Router>
     ), document.getElementById('content'));
