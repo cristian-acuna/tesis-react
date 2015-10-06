@@ -15,6 +15,11 @@ var UserStore = Reflux.createStore({
         this.trigger(this.getUserSession());
     },
 
+    onLogoutUser: function () {
+        this.userSession = {};
+        this.trigger(this.getUserSession());
+    },
+
     getUserSession: function () {
         return this.userSession;
     }

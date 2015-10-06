@@ -5,17 +5,14 @@
 
     var Navigation = require('./components/navigation.jsx');
     var Busqueda = require('./components/busqueda.jsx')
+    var Buscador = require('./components/instaBox.jsx')
+
     var Home = require('./components/home.jsx');
     var Login = require('./components/login.jsx');
     var Headroom = require('react-headroom');
     var Registro = require('./components/registro.jsx');
 
-
     var Modal = require('react-bootstrap').Modal;
-    var ModalHeader = require('react-bootstrap').ModalHeader;
-
-    var Button = require('react-bootstrap').Button;
-
     var Router = require('react-router').Router;
     var IndexRoute = require('react-router').IndexRoute;
     var Route = require('react-router').Route;
@@ -35,9 +32,8 @@
         },
 
         onLoginUser: function(usuario) {
-            console.log("LOGEADO!!!!!!!!!!!!!!!!!!!!!");
+            usuario.nombre!=undefined?this.close() : this.open();
             this.setState({ userSession: usuario });
-            this.close();
         },
 
         close() {
@@ -76,6 +72,7 @@
             <Route path="/" component={App}>
                 <IndexRoute component={Home}/>
                 <Route path="/busqueda" component={Busqueda}/>
+                <Route path="/buscador" component={Buscador}/>
                 <Route path="/registro" component={Registro}/>
             </Route>
         </Router>

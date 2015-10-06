@@ -8,11 +8,13 @@ var Header = require('./header.jsx');
 var Panel = require('react-bootstrap').Panel;
 var InputPassword = require('react-ux-password-field');
 
+var history = require('react-router').History;
 var provincias = require('../data/provincias')
+
 
 var Registro = React.createClass({
 
-    mixins: [ FormData],
+    mixins: [ FormData, history],
 
     render: function () {
         console.log(provincias);
@@ -38,25 +40,21 @@ var Registro = React.createClass({
     },
 
     handleSubmit: function() {
-         console.log(this.formData);
-        this.handleCommentSubmit(this.formData);
-    },
-
-    handleCommentSubmit: function(datosLogin) {
         $.ajax({
             url: "http://localhost:8080/registrar",
-            async: false,
             method: "GET",
             contentType:"application/json",
             dataType: "json",
-            data : datosLogin
+            data : this.formData
         }).done(function( data ) {
-            console.log("done: REGISTRADOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-            return true;
-        }).bind(this)
+            return;
+        })
             .fail( function(xhr, textStatus, errorThrown) {
                 console.log("Fail:"+textStatus);
+                return;
             });
+        this.history.pushState(null, `/`);
+        return;
     },
 
     getInitialState: function() {

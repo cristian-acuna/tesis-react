@@ -7,11 +7,8 @@ var Panel = require('react-bootstrap').Panel;
 var FormData = require('react-form-data');
 var Header = require('./header.jsx');
 var Link = require('react-router').Link;
-var Ajax = require('react-ajax');
 var UserActions = require('../actions/useractions');
 var UserStore = require('../stores/userstore');
-
-
 
 
 var Login = React.createClass({
@@ -21,7 +18,7 @@ var Login = React.createClass({
     render: function () {
         return (
                 <Panel className="login-form" footer="login">
-                    <form onChange={this.updateFormData} onSubmit={this.handleSubmit.bind(this)}>
+                    <form onChange={this.updateFormData} onSubmit={this.handleSubmit}>
                         <Input name="email" type="email" label="Usuario" placeholder="Ingrese su usuario o e-mail"/>
                         <Input name="password" type="password" label="Password" placeholder="Password"/>
                         <Input type="checkbox" label="Recordarme"/>
@@ -37,22 +34,18 @@ var Login = React.createClass({
             return;
         }
 
-        this.handleCommentSubmit(this.formData);
-    },
-
-    handleCommentSubmit: function(datosLogin) {
         $.ajax({
             url: "http://localhost:8080/login",
             method: "GET",
             contentType:"application/json",
             dataType: "json",
-            data : datosLogin
+            data : this.formData
         }).done(function( data ) {
             UserActions.loginUser(data);
             return true;
         })
-        .fail( function(xhr, textStatus, errorThrown) {
-            console.log("Fail:"+textStatus);
+            .fail( function(xhr, textStatus, errorThrown) {
+                console.log("Fail:"+textStatus);
             });
     }
 });
