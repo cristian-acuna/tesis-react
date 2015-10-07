@@ -5,12 +5,10 @@ var ListItem = require('./vinos-list-item.jsx');
 
 var InstantBox = React.createClass({
     doSearch:function(queryText){
-        console.log(queryText)
-        //get query result
         var queryResult=[];
-        this.props.data.forEach(function(person){
-            if(person.name.toLowerCase().indexOf(queryText)!=-1)
-                queryResult.push(person);
+        this.props.data.forEach(function(vino){
+            if(vino.name.toLowerCase().indexOf(queryText.toLowerCase())!=-1)
+                queryResult.push(vino);
         });
 
         this.setState({
@@ -37,12 +35,12 @@ var InstantBox = React.createClass({
 
 var SearchBox = React.createClass({
     doSearch:function(){
-        var query=this.refs.searchInput.getDOMNode().value; // this is the search text
+        var query = React.findDOMNode(this.refs.searchInput).value;            // this is the search text
         this.props.doSearch(query);
     },
     render:function(){
         return (
-            <Input type="text" ref="searchInput" placeholder="Ingrese un nombre" value={this.props.query} onChange={this.doSearch}/>
+            <input type="text" ref="searchInput" placeholder="Ingrese un nombre de vino" value={this.props.query} onChange={this.doSearch}/>
         );
     }
 });
@@ -50,24 +48,12 @@ var SearchBox = React.createClass({
 var DisplayTable = React.createClass({
     render:function(){
         //Construccion de las filas
-        var rows=[];
-        this.props.data.forEach(function(person) {
-            rows.push(  <tr>
-                            <td>{person.name}</td><td>{person.roll}</td>
-                        </tr>)
-        });
         return(
-            <table>
-                <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Roll No</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {rows}
-                </tbody>
-            </table>
+            <div className="">
+                {this.props.data.map(function(vino, i){
+                    return <ListItem data={vino}/>;
+                })}
+            </div>
         );
     }
 });
