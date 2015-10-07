@@ -21,6 +21,10 @@ body {
   }
 }
 
+.busqueda-resultados {
+  height: 130px;
+}
+
 .section-container {
   color: #787679;
   padding: 0px 160px;
@@ -105,10 +109,72 @@ body {
 }
 
 .vino-list-item {
-  margin: 0 auto;
+  background-color: whitesmoke;
+  display: inline-block;
+  height: 438px;
+  margin: 12px;
   margin-top: 40px;
+  padding: 38px;
   text-align: left;
-  width: 70%;
+  position: relative;
+  vertical-align: bottom;
+  width: 250px;
+
+  &--button {
+    bottom: 17px;
+    position: absolute;
+    right: 33px;
+
+    &-style {
+      color: #fff!important;
+      background-color: black!important;
+    }
+  }
+
+  &--name {
+    color: mediumpurple;
+    display: block;
+    font: bold 16px Arial;
+    position: relative;
+    height: 55px;
+  }
+
+  &--grapes {
+    position: relative;
+  }
+
+  &--description {
+    font: 12px Arial;
+    position: absolute;
+    top: 123px;
+    width: 173px;
+  }
+
+  &--location {
+    font: 12px Arial;
+    position: absolute;
+    bottom: 130px;
+    text-align: center;
+    width: 171px;
+
+    &-country {
+      color: mediumpurple;
+      font: bold 12px Arial;
+    }
+  }
+
+  &--year {
+    bottom: 111px;
+    display: block;
+    position: absolute;
+    text-align: center;
+    width: 174px;
+
+    &-text {
+      font: 12px Arial;
+      display: block;
+    }
+  }
 }
 
 .header {

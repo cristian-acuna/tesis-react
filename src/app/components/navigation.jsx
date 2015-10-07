@@ -44,7 +44,7 @@ var Navigation = React.createClass({
                 <Nav className="nav navbar-nav">
                     <Link className="bar-item" to={`/`}><span className="icon-nav glyphicon glyphicon-home"/>Home</Link>
                     <Link className="bar-item" to={`/busqueda`}><span className="icon-nav glyphicon glyphicon-search"/>Busqueda</Link>
-                    <Link className="bar-item" to={`/buscador`}><span className="icon-nav glyphicon glyphicon-glass"/>Wishlist</Link>
+                    <Link className="bar-item" to={`/`}><span className="icon-nav glyphicon glyphicon-glass"/>Wishlist</Link>
                     <NavDropdown eventKey={3} title="Mis Vinos">
                         <MenuItem eventKey="2">Recomendacion</MenuItem>
                         <MenuItem eventKey="3">Something else here</MenuItem>

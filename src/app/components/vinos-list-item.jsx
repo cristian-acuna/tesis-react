@@ -1,16 +1,43 @@
-var React = require('react');
+var React = require('react/addons');
 var Bootstrap = require('react-bootstrap');
+var Label = require('react-bootstrap').Label;
+var Input = require('react-bootstrap').Input;
 
 var WineItem = React.createClass({
 
+    getInitialState:function(){
+        return{
+            vino: this.props.data
+        }
+    },
     render: function () {
-        return (
-            <div className="col-xs-4">
-                <h2>CSS</h2>
-                <p>CSS is used for describing the presentation of web pages. The CSS tutorial section will help you learn the essentials of CSS, so that you can fine control the style and layout of your HTML document.</p>
-                <p><a href="http://www.tutorialrepublic.com/css-tutorial/" target="_blank" className="btn btn-success">ver detalle &raquo;</a></p>
-            </div>
-        );
+        var content = {};
+        if(this.props.data != undefined) {
+            content = (
+                <div className="vino-list-item">
+                <div className="vino-list-item--container">
+                    <span className="vino-list-item--name">{this.props.data.name}</span>
+                    <Label className="vino-list-item--grapes">{this.props.data.grapes}</Label>
+                    <div className="vino-list-item--description">{this.props.data.description}</div>
+                    <div className="vino-list-item--location">
+                        <span>{this.props.data.region + "  |  "}</span>
+                        <span className="vino-list-item--location-country">{this.props.data.country}</span>
+                    </div>
+                    <div className="vino-list-item--year">
+                        <span className="vino-list-item--year-text">{"- "+this.props.data.year+" -"}</span>
+                    </div>
+                    <div className="vino-list-item--button">
+                        <Input type="submit" className="vino-list-item--button-style" value="ver mas &raquo;"/>
+                    </div>
+                </div>
+                </div>
+
+            );
+        } else {
+            content = (<h2>Empty</h2>);
+        }
+
+        return content;
     }
 });
 

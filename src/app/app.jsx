@@ -5,7 +5,6 @@
 
     var Navigation = require('./components/navigation.jsx');
     var Busqueda = require('./components/busqueda.jsx')
-    var Buscador = require('./components/instaBox.jsx')
 
     var Home = require('./components/home.jsx');
     var Login = require('./components/login.jsx');
@@ -27,7 +26,7 @@
             return {
                 currentTab: 0,
                 userSession: {},
-                showModal: true
+                showModal: false
             };
         },
 
@@ -72,7 +71,6 @@
             <Route path="/" component={App}>
                 <IndexRoute component={Home}/>
                 <Route path="/busqueda" component={Busqueda}/>
-                <Route path="/buscador" component={Buscador}/>
                 <Route path="/registro" component={Registro}/>
             </Route>
         </Router>
