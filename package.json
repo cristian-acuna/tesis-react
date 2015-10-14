@@ -35,8 +35,10 @@
     "watchify": "^2.2.1"
   },
   "dependencies": {
+    "moment": "^2.10.6",
     "react-bootstrap": "0.25.2",
     "react-form-data": "^0.2.3",
+    "react-rating": "0.0.17",
     "react-router": "^1.0.0-beta4"
   }
 }

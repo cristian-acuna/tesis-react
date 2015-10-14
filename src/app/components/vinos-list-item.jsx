@@ -2,6 +2,8 @@ var React = require('react/addons');
 var Bootstrap = require('react-bootstrap');
 var Label = require('react-bootstrap').Label;
 var Input = require('react-bootstrap').Input;
+var Link = require('react-bootstrap').Link;
+
 
 var WineItem = React.createClass({
 
@@ -27,7 +29,9 @@ var WineItem = React.createClass({
                         <span className="vino-list-item--year-text">{"- "+this.props.data.year+" -"}</span>
                     </div>
                     <div className="vino-list-item--button">
+
                         <Input type="submit" className="vino-list-item--button-style" value="ver mas &raquo;"/>
+
                     </div>
                 </div>
                 </div>

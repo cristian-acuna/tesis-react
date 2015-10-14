@@ -10,6 +10,8 @@
     var Login = require('./components/login.jsx');
     var Headroom = require('react-headroom');
     var Registro = require('./components/registro.jsx');
+    var ViewVino = require('./components/viewVino.jsx');
+    var NewVino = require('./components/newVino.jsx');
 
     var Modal = require('react-bootstrap').Modal;
     var Router = require('react-router').Router;
@@ -70,7 +72,8 @@
         <Router history={history}>
             <Route path="/" component={App}>
                 <IndexRoute component={Home}/>
-                <Route path="/busqueda" component={Busqueda}/>
+                <Route path="/busqueda" component={Busqueda} />
+                <Route path="/nuevo" component={NewVino} />
                 <Route path="/registro" component={Registro}/>
             </Route>
         </Router>

@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 var Input = require('react-bootstrap').Input;
 var ListItem = require('./vinos-list-item.jsx');
 
@@ -25,7 +25,6 @@ var InstantBox = React.createClass({
     render:function(){
         return (
             <div className="InstantBox">
-                <h2>Instant Search</h2>
                 <SearchBox query={this.state.query} doSearch={this.doSearch}/>
                 <DisplayTable data={this.state.filteredData}/>
             </div>
@@ -40,7 +39,7 @@ var SearchBox = React.createClass({
     },
     render:function(){
         return (
-            <input type="text" ref="searchInput" placeholder="Ingrese un nombre de vino" value={this.props.query} onChange={this.doSearch}/>
+            <input className="form-control search-input" type="text" ref="searchInput" placeholder="Ingrese un nombre de vino" value={this.props.query} onChange={this.doSearch}/>
         );
     }
 });

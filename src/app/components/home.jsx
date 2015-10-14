@@ -1,14 +1,11 @@
 var React = require('react');
 var Bootstrap = require('react-bootstrap');
 var Carousel = require('./carousel.jsx')
-var Header = require('./header.jsx');
-
 
 var Home = React.createClass({
     render: function () {
         return (
             <div>
-                <Header text="Home"/>
                 <h1>Bienvenido! estas son las recomendaciones de hoy</h1>
                 <p className="lead">Use this document as a way to quickly start any new project.
                     <br />

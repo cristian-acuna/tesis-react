@@ -20,7 +20,7 @@ var Registro = React.createClass({
         console.log(provincias);
         return (
             <div>
-                <Header text="Registro" back="true" />
+                <Header return="/" text="Registro" back="true" />
                 <Panel className="registro-form" footer="nuevo usuario">
                     <form onChange={this.updateFormData} onSubmit={this.handleSubmit}>
                         <Input name="nombre" type="text" label="nombre" placeholder="Ingrese su nombre"/>
@@ -31,6 +31,8 @@ var Registro = React.createClass({
                         <Input name="provincia" type="select" label="provincia" placeholder="Seleccione ...">
                             {provincias.map(function(provincia){return (<option value={provincia.value}>{provincia.provincia}</option>)})}
                         </Input>
+                        <Input name="pais" type="text" label="pais" placeholder="Ingrese el pais"/>
+
                         <Input type="submit" className="btn btn-login" value="registrar"/>
                     </form>
                 </Panel>
@@ -45,7 +47,7 @@ var Registro = React.createClass({
             method: "GET",
             contentType:"application/json",
             dataType: "json",
-            data : this.formData
+            data: this.formData
         }).done(function( data ) {
             return;
         })
