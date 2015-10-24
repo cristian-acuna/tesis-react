@@ -10,10 +10,10 @@ var MenuItem = Bootstrap.MenuItem;
 var Link = require('react-router').Link;
 var history = require('react-router').History;
 var UserStore = require('../stores/userstore');
-var UserActions = require('../actions/useractions');
+var UserActions = require('../actions/usuarioactions');
 
 
-var Navigation = React.createClass({
+var Navegacion = React.createClass({
 
     mixins: [ history, Reflux.connect(UserStore,"onLogoutUser") ],
 
@@ -63,4 +63,4 @@ var Navigation = React.createClass({
     }
 });
 
-module.exports = Navigation;
+module.exports = Navegacion;

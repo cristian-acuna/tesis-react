@@ -1,12 +1,44 @@
 var React = require('react');
+var Reflux = require('reflux');
+
 var Header = require('./header.jsx');
 var VinoItem = require('./vinos-list-item.jsx');
 var tableData = require('../data/vinos.json');
 var InstantBox = require('./instaBox.jsx');
 var Link = require('react-router').Link;
 
+var VinoActions = require('../actions/vinoactions');
+var VinoStore = require('../stores/vinostore');
 
 var Busqueda = React.createClass({
+
+    mixins: [ history, Reflux.connect(VinoStore,"onGetVinos")],
+
+    getInitialState: function() {
+        return {
+            vinos: []
+        };
+    },
+
+    componentDidMount: function() {
+        $.ajax({
+            url: "http://localhost:8080/vino/listar",
+            method: "GET",
+            contentType:"application/json",
+            dataType: "json"
+        }).done(function( data ) {
+            VinoActions.getVinos(data);
+            if (this.isMounted()) {
+                this.setState({
+                    vinos: data
+                });
+            }
+            return true;
+        }.bind(this));
+
+        return;
+    },
+
     render: function () {
         return (
             <div>
@@ -25,7 +57,7 @@ var Busqueda = React.createClass({
 
                 </div>
                 <div className="busqueda-resultados">
-                    <InstantBox data={tableData}/>
+                    <InstantBox data={this.state.vinos}/>
                     <div className="container-fluid">
                         <hr/>
                         <div className="row">

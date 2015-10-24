@@ -3,15 +3,15 @@
     var Reflux = require('reflux');
     var UserStore = require('./stores/userstore');
 
-    var Navigation = require('./components/navigation.jsx');
+    var Navegacion = require('./components/navegacion.jsx');
     var Busqueda = require('./components/busqueda.jsx')
 
     var Home = require('./components/home.jsx');
     var Login = require('./components/login.jsx');
     var Headroom = require('react-headroom');
     var Registro = require('./components/registro.jsx');
-    var ViewVino = require('./components/viewVino.jsx');
-    var NewVino = require('./components/newVino.jsx');
+    var VerVino = require('./components/ver-vino.jsx');
+    var NuevoVino = require('./components/nuevo-vino.jsx');
 
     var Modal = require('react-bootstrap').Modal;
     var Router = require('react-router').Router;
@@ -58,7 +58,7 @@
                         <Login onClose={this.close}/>
                     </Modal>
                     <Headroom>
-                        <Navigation user={this.state.userSession} projectName="Somellier" changeTab={this.changeTab}/>
+                        <Navegacion user={this.state.userSession} projectName="Somellier" changeTab={this.changeTab}/>
                     </Headroom>
                     <div className="section-container">
                         {React.cloneElement(this.props.children || <div />, { key: pathname })}
@@ -73,8 +73,9 @@
             <Route path="/" component={App}>
                 <IndexRoute component={Home}/>
                 <Route path="/busqueda" component={Busqueda} />
-                <Route path="/nuevo" component={NewVino} />
+                <Route path="/nuevo" component={NuevoVino} />
                 <Route path="/registro" component={Registro}/>
+                <Route path="/ver" component={VerVino}/>
             </Route>
         </Router>
     ), document.getElementById('content'));

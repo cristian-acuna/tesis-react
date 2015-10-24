@@ -3,7 +3,7 @@ var Bootstrap = require('react-bootstrap');
 var Reflux = require('reflux');
 var UserStore = require('../stores/userstore');
 
-var Navigation = require('./navigation.jsx');
+var Navigation = require('./navegacion.jsx');
 var Busqueda = require('./busqueda.jsx')
 var Home = require('./home.jsx');
 var Login = require('./login.jsx');

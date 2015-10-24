@@ -1,21 +1,3 @@
-body {
-}
-.btn-login {
-  color: #fff!important;
-  background-color: mediumpurple!important;
-  float: right;
-  width: 100px!important;
-}
-
-.btn-nuevo {
-  color: #fff!important;
-  background-color: mediumpurple!important;
-  float: right;
-  margin-right: 15px;
-  margin-top: 25px;
-  width: 100px!important;
-}
-
 .bar-item {
   color: #9d9d9d;
   display: inline-block;
@@ -30,16 +12,46 @@ body {
   }
 }
 
-.busqueda-filtro {
-  height: 170px;
+.bodega-input-text {
+  bottom: -30px;
+  font-size: 10px;
+  position: absolute;
+  right: 254px;
+}
+
+.btn-agregar {
+  color: #fff!important;
+  background-color: mediumpurple!important;
   position: relative;
-  text-align: left;}
+  margin-left: 10px;
+  margin-bottom: 28px;
+}
+
+.btn-login {
+  color: #fff!important;
+  background-color: mediumpurple!important;
+  float: right;
+  width: 100px!important;
+}
+
+.btn-nuevo {
+  color: #fff!important;
+  background-color: mediumpurple!important;
+  float: right;
+  margin-top: 25px;
+  width: 200px!important;
+}
 
 .busqueda-descripcion {
   display: inline-block;
   text-align: justify;
   width: 700px;
 }
+
+.busqueda-filtro {
+  height: 170px;
+  position: relative;
+  text-align: left;}
 
 .busqueda-nuevo-btn {
   position: absolute;
@@ -49,27 +61,6 @@ body {
 
 .busqueda-resultados {
   height: 130px;
-}
-
-.section-container {
-  color: #787679;
-  padding: 0px 160px;
-  text-align: center;
-}
-
-.navigation-title {
-  &:hover {
-    background-color: transparent;
-    color: #fff;
-    text-decoration:none;
-  }
-
-  color: #b600b6;
-  float: left;
-  font-size: 27px;
-  height: 50px;
-  line-height: 20px;
-  padding: 15px 15px;
 }
 
 .caption {
@@ -89,6 +80,31 @@ body {
   width: 800px;
 }
 
+.fade-enter {
+  opacity: 0.01;
+  transition: opacity 0.5s ease-in;
+}
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+}
+
+.form-input-separation {
+  margin-bottom: 10px;
+}
+
+.header {
+  text-align: left;
+}
+
+.header-title {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+  color: mediumpurple;
+  padding-top: 10px;
+}
+
 .icon-nav {
   color: mediumpurple;
   font-size: 15px;
@@ -102,12 +118,101 @@ body {
   position: absolute;
 }
 
+.login-link-registrarse {
+  bottom: -58px;
+  position: relative;
+  left: 355px;
+  text-underline: none;
+}
+
+.login-modal {
+  margin: 0 auto;
+  padding-top: 10%;
+  width: 460px;
+}
+
+.navigation-title {
+  &:hover {
+    background-color: transparent;
+    color: #fff;
+    text-decoration:none;
+  }
+
+  color: #b600b6;
+  float: left;
+  font-size: 27px;
+  height: 50px;
+  line-height: 20px;
+  padding: 15px 15px;
+}
+
 .nuevo-vino-form-container {
-  border: solid gainsboro 1px;
-  border-radius: 3px;
-  margin: 40px;
   padding: 40px;
-  width: 700px;
+  width: 100%;
+}
+
+.nuevo-vino-form {
+
+  &--more-info {
+    position: relative;
+    margin: 0 auto;
+    margin-top: 37px;
+    padding: 40px;
+    text-align: left;
+    left: 122px;
+    width: 535px;
+  }
+
+  &--graduacion {
+    position: relative;
+    left: 208px;
+    width: 277px!important;
+  }
+
+  &--main-info {
+    position: relative;
+    margin: 0 auto;
+    width: 700px;
+
+    &-name {
+      text-align: end;
+      width: 430px;
+    }
+
+    &-visor {
+      border-width: 1px;
+      border-color: #9d9d9d;
+      border-style: solid;
+      border-radius: 15px;
+      min-height: 335px;
+      position: absolute;
+      right: 0px;
+      top: 26px;
+      width: 235px;
+
+      &-drop {
+        border-color: #9d9d9d;
+        border-radius: 20px;
+        border-style: dashed;
+        border-width: 2px;
+        height: 200px;
+        margin: 17px;
+        padding: 30px;
+        position: relative;
+        text-align: end;
+        width: 200px;
+      }
+
+      &-img {
+        border: solid 1px;
+        border-radius: 5px;
+        height: 60px;
+        margin-bottom: 6px;
+        margin-left: 13px;
+        width: 60px;
+      }
+    }
+  }
 }
 
 .registro-form {
@@ -129,26 +234,15 @@ body {
   }
 }
 
-.login-link-registrarse {
-  bottom: -58px;
-  position: relative;
-  left: 355px;
-  text-underline: none;
+.search-input {
+  font-size: 20px!important;
+  height: 50px!important;
 }
 
-.login-modal {
-  margin: 0 auto;
-  padding-top: 10%;
-  width: 460px;
-}
-
-.fade-enter {
-  opacity: 0.01;
-  transition: opacity 0.5s ease-in;
-}
-
-.fade-enter.fade-enter-active {
-  opacity: 1;
+.section-container {
+  color: #787679;
+  padding: 0px 160px;
+  text-align: center;
 }
 
 .vino-list-item {
@@ -220,20 +314,4 @@ body {
   }
 }
 
-.header {
-  text-align: left;
-}
-
-.header-title {
-  display: inline-block;
-  font-size: 16px;
-  font-weight: bold;
-  color: mediumpurple;
-  padding-top: 10px;
-}
-
-.search-input {
-  font-size: 20px!important;
-  height: 50px!important;
-}
 

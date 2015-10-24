@@ -1,7 +1,7 @@
 'use strict';
 
 var Reflux = require('reflux');
-var UserActions = require('../actions/useractions');
+var UserActions = require('../actions/usuarioactions');
 
 var UserStore = Reflux.createStore({
     listenables: [UserActions],

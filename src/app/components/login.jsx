@@ -7,7 +7,7 @@ var Panel = require('react-bootstrap').Panel;
 var FormData = require('react-form-data');
 var Header = require('./header.jsx');
 var Link = require('react-router').Link;
-var UserActions = require('../actions/useractions');
+var UserActions = require('../actions/usuarioactions');
 var UserStore = require('../stores/userstore');
 
 

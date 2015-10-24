@@ -11,7 +11,7 @@ module.exports = {
         ]
     },
     less: {
-        src: src + '/less/main.less',
+        src: src + '/less/*.less',
         watch: [
             src + '/less/**'
         ],

@@ -7,7 +7,7 @@ var InstantBox = React.createClass({
     doSearch:function(queryText){
         var queryResult=[];
         this.props.data.forEach(function(vino){
-            if(vino.name.toLowerCase().indexOf(queryText.toLowerCase())!=-1)
+            if(vino.nombre.toLowerCase().indexOf(queryText.toLowerCase())!=-1)
                 queryResult.push(vino);
         });
 
@@ -16,12 +16,20 @@ var InstantBox = React.createClass({
             filteredData: queryResult
         })
     },
+
     getInitialState:function(){
         return{
             query:'',
             filteredData: this.props.data
         }
     },
+
+    componentWillReceiveProps: function(nextProps){
+        this.setState({
+            filteredData: nextProps.data
+        });
+    },
+
     render:function(){
         return (
             <div className="InstantBox">
@@ -45,17 +53,28 @@ var SearchBox = React.createClass({
 });
 
 var DisplayTable = React.createClass({
+    getInitialState:function(){
+        return{
+            rowsData: []
+        }
+    },
+
+    componentWillReceiveProps: function(nextProps){
+        this.setState({
+            rowsData: nextProps.data
+        });
+    },
+
     render:function(){
         //Construccion de las filas
         return(
             <div className="">
-                {this.props.data.map(function(vino, i){
+                {this.state.rowsData.map(function(vino, i){
                     return <ListItem data={vino}/>;
                 })}
             </div>
         );
     }
 });
-
 
 module.exports = InstantBox;
