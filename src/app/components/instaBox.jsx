@@ -3,6 +3,9 @@ var Input = require('react-bootstrap').Input;
 var ButtonToolbar = require('react-bootstrap').ButtonToolbar;
 var SplitButton = require('react-bootstrap').SplitButton;
 var MenuItem = require('react-bootstrap').MenuItem;
+var Dropdown = require('react-bootstrap').Dropdown;
+var Glyphicon = require('react-bootstrap').Glyphicon;
+var Button = require('react-bootstrap').Button;
 var ListItem = require('./vinos-list-item.jsx');
 
 
@@ -37,13 +40,21 @@ var InstantBox = React.createClass({
             <div className="InstantBox">
                 <SearchBox query={this.state.query} doSearch={this.doSearch}/>
                 <ButtonToolbar className="buscador--filtro">
-                    <SplitButton bsStyle="primary" title="Filtros" dropdown pullRight id="split-button-dropdown-pull-right">
-                        <MenuItem eventKey="1">Action</MenuItem>
-                        <MenuItem eventKey="2">Another action</MenuItem>
-                        <MenuItem eventKey="3">Something else here</MenuItem>
-                        <MenuItem divider />
-                        <MenuItem eventKey="4">Separated link</MenuItem>
-                    </SplitButton>
+                    <Dropdown id="dropdown-custom-1">
+                        <Button >
+                            <Glyphicon glyph="star" />
+                            Filtrar por
+                        </Button>
+                        <Dropdown.Toggle/>
+                        <Dropdown.Menu className="super-colors">
+                            <MenuItem eventKey="1">nombre</MenuItem>
+                            <MenuItem eventKey="2">uva</MenuItem>
+                            <MenuItem eventKey="3">tipo</MenuItem>
+                            <MenuItem eventKey="3">cosecha</MenuItem>
+                            <MenuItem divider />
+                            <MenuItem eventKey="4">bodega</MenuItem>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </ButtonToolbar>
                 <DisplayTable data={this.state.filteredData}/>
             </div>
