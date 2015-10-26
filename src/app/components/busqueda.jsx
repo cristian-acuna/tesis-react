@@ -19,9 +19,10 @@ var Busqueda = React.createClass({
         };
     },
 
-    componentWillMount: function() {
+    componentDidMount: function() {
         $.ajax({
             url: "http://localhost:8080/vino/listar",
+            async:false,
             method: "GET",
             contentType:"application/json",
             dataType: "json"

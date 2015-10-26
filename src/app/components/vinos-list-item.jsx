@@ -12,27 +12,21 @@ var WineItem = React.createClass({
 
     mixins: [history, Reflux.connect(VinoStore,"onVinoElegido")],
 
-    getInitialState:function(){
-        return{
-            vino: this.props.data
-        }
-    },
-
     render: function () {
         var content = {};
-        if(this.state.vino.nombre != undefined) {
+        if(this.props.data.nombre !== undefined) {
             content = (
                 <div className="vino-list-item">
                 <div className="vino-list-item--container">
-                    <span className="vino-list-item--name">{this.state.vino.nombre}</span>
-                    <Label className="vino-list-item--grapes">{this.state.vino.uva.nombre}</Label>
-                    <div className="vino-list-item--description">{this.state.vino.descripcion}</div>
+                    <span className="vino-list-item--name">{this.props.data.nombre}</span>
+                    <Label className="vino-list-item--grapes">{this.props.data.uva.nombre}</Label>
+                    <div className="vino-list-item--description">{this.props.data.descripcion}</div>
                     <div className="vino-list-item--location">
-                        <span>{this.state.vino.bodega.residencia.provincia.descripcion + "  |  "}</span>
-                        <span className="vino-list-item--location-country">{this.state.vino.bodega.residencia.pais}</span>
+                        <span>{this.props.data.bodega.residencia.provincia.descripcion + "  |  "}</span>
+                        <span className="vino-list-item--location-country">{this.props.data.bodega.residencia.pais}</span>
                     </div>
                     <div className="vino-list-item--year">
-                        <span className="vino-list-item--year-text">{"- "+this.state.vino.cosecha+" -"}</span>
+                        <span className="vino-list-item--year-text">{"- "+this.props.data.cosecha+" -"}</span>
                     </div>
                     <div className="vino-list-item--button">
                         <Input type="submit" onClick={this.openDetail} className="vino-list-item--button-style" value="ver mas &raquo;"/>
@@ -48,7 +42,7 @@ var WineItem = React.createClass({
     },
 
     openDetail:function(){
-        VinoActions.vinoElegido(this.state.vino);
+        VinoActions.vinoElegido(this.props.data);
         this.history.pushState(null, `/ver`);
     }
 });

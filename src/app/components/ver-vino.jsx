@@ -31,6 +31,8 @@ var VerVino = React.createClass({
 
     render: function () {
         if (this.state.vino.bodega) {
+            var bodega = this.state.vino.bodega;
+            var ubicacion = bodega.residencia;
             const tooltip = (
                 <Tooltip>{this.state.vino.edad.descripcion}</Tooltip>
             );
@@ -39,7 +41,7 @@ var VerVino = React.createClass({
                     <Header return="/busqueda" text="Ver Vino" back="true"/>
                     <div>
                         <PageHeader className="ver-vino--header">{this.state.vino.nombre+' | '}
-                            <small className="ver-vino--descripcion-bodega">{this.state.vino.bodega.nombre}</small>
+                            <small className="ver-vino--descripcion-bodega">{bodega.nombre}</small>
                         </PageHeader>
                         <div className="ver-vino--descripcion">
                             <span className="ver-vino--cosecha">{this.state.vino.cosecha}</span>
@@ -69,14 +71,17 @@ var VerVino = React.createClass({
                         </div>
                         <div className="ver-vino--bodega">
                             <span className="ver-vino--bodega-etiqueta">Bodega</span>
-                            <span className="ver-vino--bodega-nombre">{this.state.vino.bodega.nombre}</span>
-                            <div className="ver-vino--bodega-texto">{this.state.vino.bodega.descripcion}</div>
-                            <span className="ver-vino--bodega-anio-label">Fundada en </span>
-                            <span className="ver-vino--bodega-anio">{this.state.vino.bodega.anio}</span>
-                            <a href={this.state.vino.bodega.link} className="ver-vino--bodega-link">{this.state.vino.bodega.link}</a>
-                            <span className="ver-vino--bodega-ciudad">{this.state.vino.bodega.residencia.ciudad}</span>
-                            <span className="ver-vino--bodega-procincia">{this.state.vino.bodega.residencia.provincia}</span>
-                            <span className="ver-vino--bodega-pais">{this.state.vino.bodega.residencia.pais}</span>
+                            <span className="ver-vino--bodega-nombre">{bodega.nombre}</span>
+                            <div className="ver-vino--bodega-texto">{bodega.descripcion}</div>
+                            <span className="ver-vino--bodega-anio-label">fundada en </span>
+                            <span className="ver-vino--bodega-anio">{bodega.anio}</span>
+                            <span className="ver-vino--bodega-link-label">sitio web</span>
+                            <a href={bodega.link} target="_blank" className="ver-vino--bodega-link">{bodega.link}</a>
+                            <span className="ver-vino--bodega-ubicacion">ubicación</span>
+                            <span className="ver-vino--bodega-ciudad">
+                                {ubicacion.ciudad + " | "+ ubicacion.provincia.descripcion}
+                            </span>
+                            <span className="ver-vino--bodega-pais">{ubicacion.pais}</span>
 
                         </div>
                     </div>

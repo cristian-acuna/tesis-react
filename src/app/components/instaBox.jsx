@@ -7,11 +7,14 @@ var ListItem = require('./vinos-list-item.jsx');
 
 
 var InstantBox = React.createClass({
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            filteredData: nextProps.data
+        });
+    },
+
     doSearch:function(queryText){
         var queryResult=[];
-        this.setState({
-            filteredData: queryResult
-        });
         this.props.data.forEach(function(vino){
             if(vino.nombre.toLowerCase().indexOf(queryText.toLowerCase())!=-1)
                 queryResult.push(vino);
@@ -62,13 +65,16 @@ var SearchBox = React.createClass({
 
 var DisplayTable = React.createClass({
     render:function(){
+        if(this.props.data.length!=0) {
             return (
                 <div>
                     {this.props.data.map(function (vino, i) {
                         return <ListItem key={i} data={vino}/>;
-                    })}
+                    })
+                    }
                 </div>
             );
+        }
         return null;
     }
 });
