@@ -20,7 +20,7 @@ var WineItem = React.createClass({
 
     render: function () {
         var content = {};
-        if(this.state.vino != undefined) {
+        if(this.state.vino.nombre != undefined) {
             content = (
                 <div className="vino-list-item">
                 <div className="vino-list-item--container">
@@ -28,20 +28,17 @@ var WineItem = React.createClass({
                     <Label className="vino-list-item--grapes">{this.state.vino.uva.nombre}</Label>
                     <div className="vino-list-item--description">{this.state.vino.descripcion}</div>
                     <div className="vino-list-item--location">
-                        <span>{this.state.vino.bodega.residencia.provincia + "  |  "}</span>
+                        <span>{this.state.vino.bodega.residencia.provincia.descripcion + "  |  "}</span>
                         <span className="vino-list-item--location-country">{this.state.vino.bodega.residencia.pais}</span>
                     </div>
                     <div className="vino-list-item--year">
                         <span className="vino-list-item--year-text">{"- "+this.state.vino.cosecha+" -"}</span>
                     </div>
                     <div className="vino-list-item--button">
-
                         <Input type="submit" onClick={this.openDetail} className="vino-list-item--button-style" value="ver mas &raquo;"/>
-
                     </div>
                 </div>
                 </div>
-
             );
         } else {
             content = (<h2>Empty</h2>);
@@ -53,7 +50,7 @@ var WineItem = React.createClass({
     openDetail:function(){
         VinoActions.vinoElegido(this.state.vino);
         this.history.pushState(null, `/ver`);
-    },
+    }
 });
 
 module.exports = WineItem;
