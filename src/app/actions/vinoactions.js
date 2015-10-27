@@ -4,7 +4,10 @@ var VinoActions = Reflux.createActions([
     'getVinos',
     'vinoElegido',
     'saveVino',
-    'getBodegas',
+    'setBodegas',
+    'setUvas',
+    'setEdades',
+    'setTipos',
     'saveBodega'
 ]);
 

@@ -62,11 +62,9 @@ var NuevoVino = React.createClass({
             dataType: "json"
         }).done(function( data ) {
             VinoActions.getBodegas(data);
-            if (this.isMounted()) {
                 this.setState({
                     bodegas: data
                 });
-            }
             return true;
         }.bind(this));
 
@@ -76,11 +74,9 @@ var NuevoVino = React.createClass({
             contentType:"application/json",
             dataType: "json"
         }).done(function( data ) {
-            if (this.isMounted()) {
                 this.setState({
                     uvas: data
                 });
-            }
             return true;
         }.bind(this));
 
@@ -90,11 +86,9 @@ var NuevoVino = React.createClass({
             contentType:"application/json",
             dataType: "json"
         }).done(function( data ) {
-            if (this.isMounted()) {
                 this.setState({
                     edades: data
                 });
-            }
             return true;
         }.bind(this));
 
@@ -104,11 +98,9 @@ var NuevoVino = React.createClass({
             contentType:"application/json",
             dataType: "json"
         }).done(function( data ) {
-            if (this.isMounted()) {
                 this.setState({
                     tipos: data
                 });
-            }
             return true;
         }.bind(this));
 

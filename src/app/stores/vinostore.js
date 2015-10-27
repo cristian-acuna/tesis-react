@@ -10,6 +10,9 @@ var VinoStore = Reflux.createStore({
     vinoElegido: {},
     init: function () {
         this.bodegas = [];
+        this.uvas = [];
+        this.edades = [];
+        this.tipos = [];
         this.listaVinos = [];
         this.vinoElegido = {};
     },
@@ -24,9 +27,24 @@ var VinoStore = Reflux.createStore({
         this.trigger(this.getVinoElegido());
     },
 
-    onGetBodegas: function (bodegas) {
+    onSetBodegas: function (bodegas) {
         this.bodegas = bodegas;
         this.trigger(this.getBodegas());
+    },
+
+    onSetUvas: function (uvas) {
+        this.uvas = uvas;
+        this.trigger(this.getUvas());
+    },
+
+    onSetTipos: function (tipos) {
+        this.tipos = tipos;
+        this.trigger(this.getTipos());
+    },
+
+    onSetEdades: function (edades) {
+        this.edades = edades;
+        this.trigger(this.getEdades());
     },
 
     getListaVinos: function () {
@@ -39,6 +57,18 @@ var VinoStore = Reflux.createStore({
 
     getBodegas: function () {
         return this.bodegas;
+    },
+
+    getUvas: function () {
+        return this.uvas;
+    },
+
+    getEdades: function () {
+        return this.edades;
+    },
+
+    getTipos: function () {
+        return this.tipos;
     }
 });
 
