@@ -11,17 +11,22 @@ var Glyphicon = require('react-bootstrap').Glyphicon;
 var Button = require('react-bootstrap').Button;
 var Panel = require('react-bootstrap').Panel;
 var ListItem = require('./vinos-list-item.jsx');
-
+var SelectedFilter = require('./selectedFIlter.jsx');
 
 var InstantBox = React.createClass({
     getInitialState:function(){
         return{
+            selectedValues: [],
             bodegas: VinoStore.getBodegas(),
             edades: VinoStore.getEdades(),
             tipos: VinoStore.getTipos(),
             uvas: VinoStore.getUvas(),
             query:'',
             filteredData: this.props.data,
+            bodega:'',
+            edad:'',
+            uva:'',
+            tipo:''
         }
     },
 
@@ -32,64 +37,92 @@ var InstantBox = React.createClass({
     },
 
     doSearch:function(queryText){
-        var queryResult=[];
-        var filter={};
-        this.props.data.forEach(function(vino){
-            if(vino.nombre.toLowerCase().indexOf(queryText.toLowerCase())!=-1)
-                queryResult.push(vino);
-        });
+        var searchCriteria = {
+            queryText: queryText,
+            bodega: this.state.bodega,
+            edad: this.state.edad,
+            uva: this.state.uva,
+            tipo: this.state.tipo
+        };
+
+        $.ajax({
+            url: "http://localhost:8080/vino/filtrar",
+            asyc: false,
+            method: "GET",
+            contentType:"application/json",
+            dataType: "json",
+            data : searchCriteria
+        }).done(function( data ) {
+            this.setState({
+                query:queryText,
+                filteredData: data
+            })
+        }.bind(this));
+    },
+
+    selectValue: function(filtro, valor) {
+        var selectedValues = this.state.selectedValues;
+        var filterItem = {
+            filtro: filtro,
+            valor: valor
+        };
+        selectedValues.push(filterItem);
 
         this.setState({
-            query:queryText,
-            filteredData: queryResult
-        })
+            selectedValues: selectedValues
+        });
     },
 
     handleUva:function(e){
-        var queryResult=[];
-        this.props.data.forEach(function(vino){
-            if(vino.uva.nombre.toLowerCase().indexOf(e.target.text.toLowerCase())!=-1)
-                queryResult.push(vino);
-        });
-        this.setState({filteredData: queryResult});
+        this.setState({uva: e.target.text});
+        this.selectValue("uva", e.target.text);
     },
 
     handleTipo:function(e){
-        var queryResult=[];
-        this.props.data.forEach(function(vino){
-            if(vino.tipoVino.nombre.toLowerCase().indexOf(e.target.text.toLowerCase())!=-1)
-                queryResult.push(vino);
-        });
-        this.setState({filteredData: queryResult});
+        this.setState({tipo: e.target.text});
+        this.selectValue("tipo", e.target.text);
     },
 
     handleEdad:function(e){
-        var queryResult=[];
-        this.props.data.forEach(function(vino){
-            if(vino.edad.nombre.toLowerCase().indexOf(e.target.text.toLowerCase())!=-1)
-                queryResult.push(vino);
-        });
-        this.setState({filteredData: queryResult});
+        this.setState({edad: e.target.text});
+        this.selectValue("edad", e.target.text);
     },
 
     handleBodega:function(e){
-        var queryResult=[];
-        this.props.data.forEach(function(vino){
-            if(vino.bodega.nombre.toLowerCase().indexOf(e.target.text.toLowerCase())!=-1)
-                queryResult.push(vino);
-        });
-        this.setState({filteredData: queryResult});
+        this.setState({bodega: e.target.text});
+        this.selectValue("bodega", e.target.text);
+    },
+
+    deleteFiltro:function(unselected){
+        var newData = this.state.selectedValues.slice(); //copy array
+        var unselectedIndex = this.state.selectedValues.map(function (item, index) {
+            item.filtro == unselected? newData.splice(index, 1):''}, this); //delete item
+        this.setState({selectedValues: newData}); //update state
+        var stateObject = function() {
+            returnObj = {};
+            returnObj[unselected] = '';
+            return returnObj;
+        }.bind(unselected)();
+
+        this.setState( stateObject );
     },
 
     render:function(){
         return (
-            <div className="InstantBox">
+            <div className="buscador--container">
                 <SearchBox query={this.state.query} doSearch={this.doSearch}/>
-                <Button className="buscador--filtro" onClick={ ()=> this.setState({ open: !this.state.open })}>
+                <Button bsStyle="link" className="buscador--filtro" onClick={ ()=> this.setState({ open: !this.state.open })}>
                     <Glyphicon style={{marginRight: 10 + 'px'}} glyph="ok" />
                     busqueda avanzada
                 </Button>
-                    <Panel className="buscador--filtro-panel" collapsible expanded={this.state.open}>
+                <span className="buscador--filtro-labels">
+                    {
+                        this.state.selectedValues.map(function (item, index) {
+                            return <SelectedFilter index={index} filtro={item} deleteFiltro={this.deleteFiltro} />;
+                        }, this)
+                    }
+                </span>
+                    <Panel header="" className="buscador--filtro-panel" collapsible expanded={this.state.open}>
                         {this.renderListItems("uva",this.state.uvas, this.handleUva)}
                         {this.renderListItems("tipo de vino",this.state.tipos, this.handleTipo)}
                         {this.renderListItems("añejamiento",this.state.edades, this.handleEdad)}
@@ -103,7 +136,7 @@ var InstantBox = React.createClass({
     renderListItems:function(criteria, collection, callBack ){
         return (
             <Dropdown className="buscador--filtro-combos" onSelect={callBack}>
-                <Button style={{width: 170 + 'px', backgroundColor: 'mediumpurple', color: 'whitesmoke'}}>
+                <Button style={{width: 170 + 'px'}}>
                     {criteria}
                 </Button>
                 <Dropdown.Toggle/>
@@ -116,13 +149,32 @@ var InstantBox = React.createClass({
 });
 
 var SearchBox = React.createClass({
-    doSearch:function(){
-        var query = React.findDOMNode(this.refs.searchInput).value;
-        this.props.doSearch(query);
+    getInitialState:function(){
+        return{
+            query: ''
+        }
     },
+
+    handleInput:function(event){
+        this.setState(
+            { query: event.target.value }
+        )
+    },
+
+    doSearch:function(){
+        this.props.doSearch(this.state.query);
+    },
+
     render:function(){
+        const innerButton = <Button onClick={this.doSearch}>
+            <Glyphicon style={{marginRight: 10 + 'px'}} glyph="search" />
+            buscar
+        </Button>;
+
         return (
-            <input className="form-control buscador--input" type="text" ref="searchInput" placeholder="Ingrese un nombre de vino" value={this.props.query} onChange={this.doSearch}/>
+            <span className="buscador--search-container">
+                <Input bsSize="small" type="text" onChange={this.handleInput} placeholder="Ingrese un nombre de vino" buttonAfter={innerButton} />
+            </span>
         );
     }
 });
@@ -132,10 +184,7 @@ var DisplayTable = React.createClass({
         if(this.props.data.length!=0) {
             return (
                 <div>
-                    {this.props.data.map(function (vino, i) {
-                        return <ListItem key={i} data={vino}/>;
-                    })
-                    }
+                    {this.props.data.map(function (vino, i) {return <ListItem key={i} data={vino}/>;})}
                 </div>
             );
         }
