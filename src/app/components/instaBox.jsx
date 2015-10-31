@@ -62,15 +62,19 @@ var InstantBox = React.createClass({
 
     selectValue: function(filtro, valor) {
         var selectedValues = this.state.selectedValues;
-        var filterItem = {
-            filtro: filtro,
-            valor: valor
-        };
-        selectedValues.push(filterItem);
+        var exists = false;
+        this.state.selectedValues.map(function (item, index) {exists = item.filtro == filtro;}, this);
 
-        this.setState({
-            selectedValues: selectedValues
-        });
+        if (!exists) {
+            var filterItem = {
+                filtro: filtro,
+                valor: valor
+            };
+            selectedValues.push(filterItem);
+            this.setState({
+                selectedValues: selectedValues
+            });
+        }
     },
 
     handleUva:function(e){

@@ -9,11 +9,10 @@ var OverlayTrigger = Bootstrap.OverlayTrigger
 var Label = Bootstrap.Label
 
 var Rating = require('react-rating');
-var Carousel = require('./carousel.jsx')
 var Header = require('./header.jsx');
 var history = require('react-router').History;
 var VinoStore = require('../stores/vinostore');
-
+var CommentBox = require('./comment-box.jsx');
 
 var VerVino = React.createClass({
 
@@ -82,9 +81,9 @@ var VerVino = React.createClass({
                                 {ubicacion.ciudad + " | "+ ubicacion.provincia.descripcion}
                             </span>
                             <span className="ver-vino--bodega-pais">{ubicacion.pais}</span>
-
                         </div>
                     </div>
+                    <CommentBox vino={this.state.vino} />
                 </div>
             );
         }
