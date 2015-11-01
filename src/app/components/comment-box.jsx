@@ -28,20 +28,8 @@ var CommentBox = React.createClass({
         var commentsCriteria = {
             id: this.props.vino.id
         };
-
-        $.ajax({
-            url: "http://localhost:8080/vino/comentarios",
-            async:false,
-            method: "GET",
-            contentType:"application/json",
-            dataType: "json",
-            data : commentsCriteria
-        }).done(function( data ) {
-                this.setState({
-                    comentarios: data
-                });
-            return true;
-        }.bind(this));
+        
+        this.ajaxCall("http://localhost:8080/vino/comentarios","GET", commentsCriteria);
     },
 
     render: function () {
@@ -53,55 +41,58 @@ var CommentBox = React.createClass({
             <div className="comment-box">
                 <div>
                     <span className="comment-box--input">
-                        <Input bsSize="small" onChange={this.handleInput} type="textarea" placeholder="Ingrese su comentario" buttonAfter={innerButton} />
+                        <Input bsSize="small" ref="commentInput" type="textarea" placeholder="Ingrese su comentario" buttonAfter={innerButton} />
                     </span>
                 </div>
                 {this.state.comentarios.map(
                     function (comentario, i) {
+                        const trashComponent = <p><Button onClick={this.deleteComment} className="comment--button" bsStyle="link"><Glyphicon glyph="trash" id={comentario.id}/></Button></p>;
                         return  <div className="comment">
                                     <span><b>{comentario.usuario.nombre+' '+comentario.usuario.apellido}</b> comento:</span>
                                     <p style={{fontSize: '12px'}}><i>{comentario.comentario}</i></p>
                                     <span className="comment--fecha">Fecha de comentario: {comentario.fecha}</span>
-                                    <p><Button className="comment--button" bsStyle="link"><Glyphicon glyph="trash" /></Button></p>
+                                    {comentario.usuario.id == 1? trashComponent : null}
                                 </div>;
-                    }
+                    }.bind(this)
                 )}
             </div>
         );
     },
 
-    handleInput:function(event){
-        this.setState(
-            { comentario: event.target.value }
-        )
-    },
-
     doComment: function () {
         var request =
         {
-            comentario: this.state.comentario,
+            comentario: this.refs.commentInput.getInputDOMNode().value,
             usuario: 1,
             vino: this.props.vino.id
         };
 
+        this.ajaxCall("http://localhost:8080/vino/comentar","POST", JSON.stringify(request));
+    },
+
+    deleteComment: function (event) {
+        var commentsCriteria = {
+            id: event.target.id,
+            idVino: this.props.vino.id
+        };
+
+        this.ajaxCall("http://localhost:8080/vino/descomentar","GET", commentsCriteria);
+    },
+
+    ajaxCall: function (url, method, object) {
         $.ajax({
-            url: "http://localhost:8080/vino/comentar",
-            async: false,
-            method: "POST",
-            crossOrigin: true,
+            url: url,
+            async:false,
+            method: method,
             contentType:"application/json",
             dataType: "json",
-            data: JSON.stringify(request)
+            data : object
         }).done(function( data ) {
             this.setState({
-                arrayvar: this.state.comentarios.concat([newelement])
-            })
-            console.log("RATEDDDDDDDDDDDDD:");
-
-            return true;
-        }).fail( function(xhr, textStatus, errorThrown) {
-            console.log("Fail:"+textStatus);
-        });
+                comentarios: data
+            });
+            this.refs.commentInput.getInputDOMNode().value="";
+        }.bind(this));
     }
 });
 
