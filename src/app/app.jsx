@@ -7,7 +7,7 @@
     var VinoStore = require('./stores/vinostore');
 
     var Navegacion = require('./components/navegacion.jsx');
-    var Busqueda = require('./components/busqueda.jsx')
+    var Busqueda = require('./components/busqueda.jsx');
 
     var Home = require('./components/home.jsx');
     var Login = require('./components/login.jsx');
@@ -26,9 +26,6 @@
     var App = React.createClass({
 
         mixins: [Reflux.listenTo(UserStore, 'onLoginUser'),
-            Reflux.connect(VinoStore,"onSaveBodega"),
-            Reflux.connect(VinoStore,"onSaveBodega"),
-            Reflux.connect(VinoStore,"onSaveBodega"),
             Reflux.connect(VinoStore,"onSaveBodega")
         ],
 
@@ -36,7 +33,7 @@
             return {
                 currentTab: 0,
                 userSession: {},
-                showModal: false
+                showModal: true
             };
         },
 
@@ -49,7 +46,6 @@
                 dataType: "json"
             }).done(function( data ) {
                 VinoActions.setBodegas(data);
-                return true;
             }.bind(this));
 
             $.ajax({
@@ -60,7 +56,6 @@
                 dataType: "json"
             }).done(function( data ) {
                 VinoActions.setUvas(data);
-                return true;
             }.bind(this));
 
             $.ajax({
@@ -71,7 +66,6 @@
                 dataType: "json"
             }).done(function( data ) {
                 VinoActions.setEdades(data);
-                return true;
             }.bind(this));
 
             $.ajax({
@@ -82,7 +76,6 @@
                 dataType: "json"
             }).done(function( data ) {
                 VinoActions.setTipos(data);
-                return true;
             }.bind(this));
 
             return;

@@ -3,10 +3,16 @@ var Bootstrap = require('react-bootstrap');
 var Reflux = require('reflux');
 var UserStore = require('../stores/userstore');
 
-var PageHeader = Bootstrap.PageHeader
-var Tooltip = Bootstrap.Tooltip
-var OverlayTrigger = Bootstrap.OverlayTrigger
-var Label = Bootstrap.Label
+var PageHeader = Bootstrap.PageHeader;
+var Tooltip = Bootstrap.Tooltip;
+var OverlayTrigger = Bootstrap.OverlayTrigger;
+var Label = Bootstrap.Label;
+var Glyphicon = Bootstrap.Glyphicon;
+var Popover = Bootstrap.Popover;
+var Button = Bootstrap.Button;
+var Collapse = Bootstrap.Collapse;
+var Input = Bootstrap.Input;
+
 
 var Rating = require('react-rating');
 var Header = require('./header.jsx');
@@ -20,6 +26,9 @@ var VerVino = React.createClass({
 
     getInitialState: function () {
         return {
+            open: '',
+            msjWish: '',
+            wish: 'star-empty',
             vino: {}
         };
     },
@@ -35,6 +44,16 @@ var VerVino = React.createClass({
             const tooltip = (
                 <Tooltip>{this.state.vino.edad.descripcion}</Tooltip>
             );
+            const tooltipCosto = (
+                <Tooltip >Desde aqui puede compartir el costo con el cual adquirio este vino. El valor que ingrese junto con el de otros usuarios se computan para recomendarle a ud el mejor precio promedio al que deberia adquirir este vino. Ni un peso mas.</Tooltip>
+            );
+            const tooltipFav = (
+                <Tooltip>Haciendo click aqui puede agregar este vino a su Wishlist personal. Su Wishlist le permitira llevar un registro de aquellos hallazgos que le gustaria recordar para proximas ocaciones. Puede acceder a esta seccion desde la barra superior de navegacion.</Tooltip>
+            );
+            const innerButton = <Button>
+                <Glyphicon style={{marginRight: 10 + 'px'}} glyph="usd" />
+                Ok
+            </Button>;
             return (
                 <div>
                     <Header return="/busqueda" text="Ver Vino" back="true"/>
@@ -44,6 +63,12 @@ var VerVino = React.createClass({
                         </PageHeader>
                         <div className="ver-vino--descripcion">
                             <span className="ver-vino--cosecha">{this.state.vino.cosecha}</span>
+
+                            <OverlayTrigger trigger="click" rootClose placement="left" overlay={<Popover title="Aviso"><strong>{this.state.msjWish}</strong> Visite Wishlist para ver sus vinos.</Popover>}>
+                            <OverlayTrigger overlay={tooltipFav}>
+                                <span onClick={this.onWish} className="ver-vino--wishlist"><Glyphicon glyph={this.state.wish}/></span>
+                            </OverlayTrigger>
+                            </OverlayTrigger>
                             <img className="ver-vino--descripcion-img" src="http://www.mujeresycia.com/uploads/img/Foto-botella.jpg"/>
                             <span className="ver-vino--descripcion-texto">{this.state.vino.descripcion}</span>
                             <span className="ver-vino--descripcion-envejecimiento">envejecimiento</span>
@@ -52,11 +77,25 @@ var VerVino = React.createClass({
                                     <span className="ver-vino--descripcion-edad">{this.state.vino.edad.nombre}</span>
                                 </Label>
                             </OverlayTrigger>
+                            <div className="ver-vino--costear-container">
+                                <OverlayTrigger placement="left" overlay={tooltipCosto}>
+                                    <Button bsStyle="default" className="ver-vino--costear-boton" onClick={ ()=> this.setState({ open: !this.state.open })}>
+                                        Costear Vino
+                                    </Button>
+                                </OverlayTrigger>
+                                <Collapse in={this.state.open}>
+                                    <div className="ver-vino--costear-area">
+                                        <Input bsSize="small" type="text" placeholder="Ingrese un precio" buttonAfter={innerButton} />
+                                    </div>
+                                </Collapse>
+                            </div>
                             <span className="ver-vino--descripcion-precio-label">precio sugerido</span>
                             <span className="ver-vino--descripcion-precio">$79.99</span>
-                            <div className="ver-vino--descripcion-rating">
-                                "Como calificaría a este vino?"<Rating fractions={2} onChange={this.onRate}/>
-                            </div>
+                            <OverlayTrigger trigger="click" rootClose placement="left" overlay={<Popover title={<strong>"Gracias por tu calificacion!!"</strong>}>Tu opinion contribuye a mejorar la experiencia Somellier.</Popover>}>
+                                <div className="ver-vino--descripcion-rating">
+                                    "Como calificaría a este vino?"<Rating fractions={2} onChange={this.onRate}/>
+                                </div>
+                            </OverlayTrigger>
                         </div>
                         <div className="ver-vino--tipo">
                             <span className="ver-vino--tipo-etiqueta">tipo de vino</span>
@@ -91,30 +130,42 @@ var VerVino = React.createClass({
         return null;
     },
 
+    onWish: function(rating) {
+        var request =
+        {
+            usuario: 1,
+            vino: this.state.vino.id
+        };
+        this.ajaxCall("http://localhost:8080/vino/wish","POST", JSON.stringify(request));
+        this.setState({
+            wish: this.state.wish == 'star'? 'star-empty':'star'
+        });
+
+        this.setState({
+            msjWish: this.state.wish == 'star'? 'El vino ha sido removido de su Wishlist':'El vino ha sido guardado en su Wishlist!'
+        });
+
+    },
+
     onRate: function(rating) {
         var request =
         {
             rate: rating,
-            usuario: (UserStore.getUserSession()).id,
+            usuario: 1,/*(UserStore.getUserSession()).id,*/
             vino: this.state.vino.id
         };
+        this.ajaxCall("http://localhost:8080/vino/rate","POST", JSON.stringify(request));
+    },
 
+    ajaxCall: function (url, method, object) {
         $.ajax({
-            url: "http://localhost:8080/vino/rate",
-            async: false,
-            method: "POST",
-            crossOrigin: true,
+            url: url,
+            async:false,
+            method: method,
             contentType:"application/json",
             dataType: "json",
-            data: JSON.stringify(request)
-        }).done(function( data ) {
-            console.log("RATEDDDDDDDDDDDDD:");
-            return true;
-        }).fail( function(xhr, textStatus, errorThrown) {
-            console.log("Fail:"+textStatus);
-            return;
-        });
-        return;
+            data : object
+        }).done(function( data ) {});
     }
 });
 
