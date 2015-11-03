@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "moment": "^2.10.6",
-    "react-bootstrap": "0.25.2",
+    "react-bootstrap": "0.27.3",
     "react-dropzone": "^2.2.1",
     "react-form-data": "^0.2.3",
     "react-rating": "0.0.17",

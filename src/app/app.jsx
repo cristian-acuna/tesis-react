@@ -15,6 +15,8 @@
     var Registro = require('./components/registro.jsx');
     var VerVino = require('./components/ver-vino.jsx');
     var NuevoVino = require('./components/nuevo-vino.jsx');
+    var Wishlist = require('./components/wishlist.jsx');
+
 
     var Modal = require('react-bootstrap').Modal;
     var Router = require('react-router').Router;
@@ -33,7 +35,7 @@
             return {
                 currentTab: 0,
                 userSession: {},
-                showModal: true
+                showModal: false
             };
         },
 
@@ -125,6 +127,7 @@
                 <Route path="/nuevo" component={NuevoVino} />
                 <Route path="/registro" component={Registro}/>
                 <Route path="/ver" component={VerVino}/>
+                <Route path="/wishlist" component={Wishlist}/>
             </Route>
         </Router>
     ), document.getElementById('content'));
