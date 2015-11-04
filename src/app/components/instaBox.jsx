@@ -10,8 +10,9 @@ var Dropdown = require('react-bootstrap').Dropdown;
 var Glyphicon = require('react-bootstrap').Glyphicon;
 var Button = require('react-bootstrap').Button;
 var Panel = require('react-bootstrap').Panel;
-var ListItem = require('./vinos-list-item.jsx');
 var SelectedFilter = require('./selectedFIlter.jsx');
+var VinosTabla = require('./vinos-tabla.jsx');
+
 
 var InstantBox = React.createClass({
     getInitialState:function(){
@@ -132,7 +133,7 @@ var InstantBox = React.createClass({
                         {this.renderListItems("añejamiento",this.state.edades, this.handleEdad)}
                         {this.renderListItems("bodega",this.state.bodegas, this.handleBodega)}
                     </Panel>
-                <DisplayTable data={this.state.filteredData}/>
+                <VinosTabla onWishlist={false} data={this.state.filteredData}/>
             </div>
         );
     },
@@ -180,19 +181,6 @@ var SearchBox = React.createClass({
                 <Input bsSize="small" type="text" onChange={this.handleInput} placeholder="Ingrese un nombre de vino" buttonAfter={innerButton} />
             </span>
         );
-    }
-});
-
-var DisplayTable = React.createClass({
-    render:function(){
-        if(this.props.data.length!=0) {
-            return (
-                <div>
-                    {this.props.data.map(function (vino, i) {return <ListItem key={i} data={vino}/>;})}
-                </div>
-            );
-        }
-        return null;
     }
 });
 

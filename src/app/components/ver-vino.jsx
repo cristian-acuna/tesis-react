@@ -37,6 +37,7 @@ var VerVino = React.createClass({
     onVinoElegido: function(vino) {
         this.setState({ vino: vino });
         this.getPrecioPromedio();
+        this.isWished();
     },
 
     render: function () {
@@ -150,15 +151,11 @@ var VerVino = React.createClass({
             usuario: 1,
             vino: this.state.vino.id
         };
-        this.ajaxCall("http://localhost:8080/vino/wish","POST", JSON.stringify(request));
+        this.ajaxCall("http://localhost:8080/wishlist/wish","POST", JSON.stringify(request));
         this.setState({
-            wish: this.state.wish == 'star'? 'star-empty':'star'
-        });
-
-        this.setState({
+            wish: this.state.wish == 'star'? 'star-empty':'star',
             msjWish: this.state.wish == 'star'? 'El vino ha sido removido de su Wishlist':'El vino ha sido guardado en su Wishlist!'
         });
-
     },
 
     onRate: function(rating) {
@@ -174,7 +171,6 @@ var VerVino = React.createClass({
     ajaxCall: function (url, method, object) {
         $.ajax({
             url: url,
-            async:false,
             method: method,
             contentType:"application/json",
             dataType: "json",
@@ -192,7 +188,6 @@ var VerVino = React.createClass({
 
         $.ajax({
             url: "http://localhost:8080/vino/precio",
-            async:false,
             method: "GET",
             contentType:"application/json",
             dataType: "json",
@@ -202,7 +197,29 @@ var VerVino = React.createClass({
                 costoPromedio: promedio
             });
         }.bind(this));
+    },
+
+    isWished: function () {
+        var request =
+        {
+            usuario: 1,
+            vino: this.state.vino.id
+        };
+
+        $.ajax({
+            url: "http://localhost:8080/wishlist/iswish",
+            method: "POST",
+            contentType:"application/json",
+            dataType: "json",
+            data : JSON.stringify(request)
+        }).done(function( isWished ) {
+            this.setState({
+                wish: isWished ? 'star' : 'star-empty'
+            });
+        }.bind(this));
     }
+
+
 });
 
 module.exports = VerVino;

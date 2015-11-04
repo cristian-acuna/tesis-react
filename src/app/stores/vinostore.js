@@ -8,6 +8,7 @@ var VinoStore = Reflux.createStore({
     bodegas: [],
     listaVinos: [],
     vinoElegido: {},
+    wishlist: [],
     init: function () {
         this.bodegas = [];
         this.uvas = [];
@@ -15,6 +16,7 @@ var VinoStore = Reflux.createStore({
         this.tipos = [];
         this.listaVinos = [];
         this.vinoElegido = {};
+        this.wishlist = [];
     },
 
     onGetVinos: function (vinos) {
@@ -47,6 +49,11 @@ var VinoStore = Reflux.createStore({
         this.trigger(this.getEdades());
     },
 
+    onSetWishlist: function (wishlist) {
+        this.wishlist = wishlist;
+        this.trigger(this.getWishlist());
+    },
+
     getListaVinos: function () {
         return this.listaVinos;
     },
@@ -69,6 +76,10 @@ var VinoStore = Reflux.createStore({
 
     getTipos: function () {
         return this.tipos;
+    },
+
+    getWishlist: function () {
+        return this.wishlist;
     }
 });
 

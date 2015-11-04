@@ -8,7 +8,8 @@ var VinoActions = Reflux.createActions([
     'setUvas',
     'setEdades',
     'setTipos',
-    'saveBodega'
+    'saveBodega',
+    'setWishlist'
 ]);
 
 module.exports = VinoActions;
