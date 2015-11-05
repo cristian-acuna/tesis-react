@@ -9,11 +9,10 @@ var Glyphicon = Bootstrap.Glyphicon;
 
 var history = require('react-router').History;
 var VinoActions = require('../actions/vinoactions');
-var VinoStore = require('../stores/vinostore');
 
 var WineItem = React.createClass({
 
-    mixins: [history, Reflux.connect(VinoStore,"onVinoElegido")],
+    mixins: [ history ],
 
     render: function () {
         var content = {};
@@ -38,7 +37,10 @@ var WineItem = React.createClass({
                         <span className="vino-list-item--year-text">{"- "+this.props.data.cosecha+" -"}</span>
                     </div>
                     <div className="vino-list-item--button">
-                        <Input type="submit" onClick={this.openDetail} className="vino-list-item--button-style" value="ver mas &raquo;"/>
+                        <Input type="submit"
+                               onClick={this.openDetail}
+                               className="vino-list-item--button-style"
+                               value="ver mas &raquo;"/>
                     </div>
                 </div>
                 </div>

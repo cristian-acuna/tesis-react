@@ -2,7 +2,6 @@ var React = require('react');
 var history = require('react-router').History;
 var Bootstrap = require('react-bootstrap');
 var Button = Bootstrap.Button;
-var Link = require('react-router').Link;
 
 
 var Header = React.createClass({

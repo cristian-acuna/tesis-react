@@ -22,16 +22,9 @@ var provincias = require('../data/provincias')
 
 var NuevoVino = React.createClass({
 
-    mixins: [ FormData, history, Reflux.connect(VinoStore,"onSaveBodega")],
+    mixins: [ FormData, history, Reflux.listenTo(VinoStore,"onSaveBodega")],
 
-    onDrop: function (files) {
-        this.setState({
-            vinoImgs: files
-        });
-        console.log('IMAGEN VINO: ', files);
-    },
-
-    getBase64Image: function (img) {
+   /* getBase64Image: function (img) {
     var canvas = document.createElement("canvas");
     canvas.width = img.width;
     canvas.height = img.height;
@@ -41,10 +34,24 @@ var NuevoVino = React.createClass({
     var dataURL = canvas.toDataURL("image/png");
 
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    },*/
+
+    readURL: function (files) {
+        var self = this;
+        var reader = new FileReader();
+        var file = files[0];
+        reader.onloadend = function (upload) {
+            self.setState({
+                image_uri: upload.target.result
+            });
+        };
+
+        reader.readAsDataURL(file);
     },
 
     getInitialState: function() {
         return {
+            image_uri: '',
             vinoImgs: {},
             bodegas: [],
             edades: [],
@@ -55,56 +62,33 @@ var NuevoVino = React.createClass({
     },
 
     componentDidMount: function() {
-        $.ajax({
-            url: "http://localhost:8080/bodega/listar",
-            method: "GET",
-            contentType:"application/json",
-            dataType: "json"
-        }).done(function( data ) {
-            VinoActions.getBodegas(data);
-                this.setState({
-                    bodegas: data
-                });
-            return true;
-        }.bind(this));
+        this.setState({
+            bodegas: VinoStore.getBodegas()
+        });
 
-        $.ajax({
-            url: "http://localhost:8080/vino/uvas",
-            method: "GET",
-            contentType:"application/json",
-            dataType: "json"
-        }).done(function( data ) {
-                this.setState({
-                    uvas: data
-                });
-            return true;
-        }.bind(this));
+        this.setState({
+            uvas: VinoStore.getUvas()
+        });
 
-        $.ajax({
-            url: "http://localhost:8080/vino/edades",
-            method: "GET",
-            contentType:"application/json",
-            dataType: "json"
-        }).done(function( data ) {
-                this.setState({
-                    edades: data
-                });
-            return true;
-        }.bind(this));
+        this.setState({
+            edades: VinoStore.getEdades()
+        });
 
-        $.ajax({
-            url: "http://localhost:8080/vino/tipos",
-            method: "GET",
-            contentType:"application/json",
-            dataType: "json"
-        }).done(function( data ) {
-                this.setState({
-                    tipos: data
-                });
-            return true;
-        }.bind(this));
+        this.setState({
+            tipos: VinoStore.getTipos()
+        });
+    },
 
-        return;
+    onSaveBodega: function(bodegas) {
+        this.setState({ bodegas: bodegas });
+        this.close();
+    },
+
+    onDrop: function (files) {
+        this.setState({
+            vinoImgs: files
+        });
+        this.readURL(files);
     },
 
     close() {
@@ -125,7 +109,7 @@ var NuevoVino = React.createClass({
         }
         return (
             <div>
-                <Modal keyboard={false} show={this.state.showModal} onHide={this.close}>
+                <Modal backdrop={false} keyboard={false} show={this.state.showModal} onHide={this.close}>
                     <NuevaBodega onClose={this.close}/>
                 </Modal>
                 <Header return="/busqueda" text="Nuevo Vino" back="true" />
@@ -134,12 +118,23 @@ var NuevoVino = React.createClass({
                         <div className="nuevo-vino-form--main-info">
                             <div  className="nuevo-vino-form--main-info-name">
                                 <Input name="nombre" type="text" label="Nombre" placeholder="Ingrese el nombre"/>
-                                <Input rows="8" name="descripcion" type="textarea" label="Descripcion" placeholder="Ingrese una descripcion"/>
+                                <Input rows="8"
+                                       name="descripcion"
+                                       type="textarea"
+                                       label="Descripcion"
+                                       placeholder="Ingrese una descripcion"/>
                                 <Input name="bodega" type="select" label="Bodega" placeholder="Seleccione ...">
                                     <option value="placeholder">Seleccione a que bodega pertenece ...</option>
                                     {this.state.bodegas.map(function(bodega){return (<option value={bodega.id}>{bodega.nombre}</option>)})}
                                 </Input>
-                                <span className="bodega-input-text">No encuentra una bodega en la lista?<Button onClick={this.open} className="btn-agregar" bsSize="xsmall">Agregar bodega</Button></span>
+                                <span className="bodega-input-text">
+                                    No encuentra una bodega en la lista?
+                                    <Button onClick={this.open}
+                                            className="btn-agregar"
+                                            bsSize="xsmall">
+                                        Agregar bodega
+                                    </Button>
+                                </span>
                             </div>
                             <div className="nuevo-vino-form--main-info-visor">
                                 <Dropzone className="nuevo-vino-form--main-info-visor-drop" onDrop={this.onDrop}>
@@ -148,30 +143,52 @@ var NuevoVino = React.createClass({
                                 {this.state.vinoImgs.length > 0 ?
                                     <div>
                                         {this.state.vinoImgs.map((file) =>
-                                            <img ref="imgInput" className="nuevo-vino-form--main-info-visor-img" src={file.preview} />
+                                            <img className="nuevo-vino-form--main-info-visor-img" src={file.preview} />
                                         )}
                                     </div> : null
                                 }
+                                <img id="blah" src={this.state.image_uri} alt="your image" />
                             </div>
-
                         </div>
                         <div className="nuevo-vino-form--more-info">
-                            <Input className="form-input-separation" name="uva" type="select" label="Uva" placeholder="Seleccione ...">
+                            <Input className="form-input-separation"
+                                   name="uva"
+                                   type="select"
+                                   label="Uva"
+                                   placeholder="Seleccione ...">
                                 <option value="placeholder">Seleccione la uva ...</option>
                                 {this.state.uvas.map(function(uva){return (<option value={uva.id}>{uva.nombre}</option>)})}
                             </Input>
-                            <Input className="form-input-separation" name="tipoVino" type="select" label="Tipo de vino" placeholder="Seleccione ...">
+                            <Input className="form-input-separation"
+                                   name="tipoVino"
+                                   type="select"
+                                   label="Tipo de vino"
+                                   placeholder="Seleccione ...">
                                 <option value="placeholder">Seleccione el tipo de vino...</option>
                                 {this.state.tipos.map(function(tipo){return (<option value={tipo.id}>{tipo.nombre}</option>)})}
                             </Input>
-                            <Input className="form-input-separation" name="edad" type="select" label="Edad" placeholder="Seleccione ...">
+                            <Input className="form-input-separation"
+                                   name="edad"
+                                   type="select"
+                                   label="Edad"
+                                   placeholder="Seleccione ...">
                                 <option value="placeholder">Seleccione la edad ...</option>
                                 {this.state.edades.map(function(edad){return (<option value={edad.id}>{edad.nombre}</option>)})}
                             </Input>
                             <Input className="form-input-separation" name="cosecha" type="select" label="Cosecha">
                                 {options}
                             </Input>
-                            <Input className="form-input-separation" groupClassName="nuevo-vino-form--graduacion" addonAfter={innerGlyphicon} name="graduacion" type="text" label="% alc" placeholder="Ingrese la graduacion alcoholica"/>
+                            <Input className="form-input-separation"
+                                   groupClassName="nuevo-vino-form--graduacion"
+                                   type="number"
+                                   min="0"
+                                   step="0.05"
+                                   data-number-to-fixed="2"
+                                   data-number-stepfactor="100"
+                                   addonAfter={innerGlyphicon}
+                                   name="graduacion"
+                                   label="% alc"
+                                   placeholder="Ingrese la graduacion alcoholica"/>
                             <Input type="submit" className="btn btn-nuevo" value="Guardar"/>
                         </div>
                     </form>
@@ -181,9 +198,6 @@ var NuevoVino = React.createClass({
     },
 
     handleSubmit: function() {
-        var image = React.findDOMNode(this.refs.imgInput);
-        console.log(image);
-
         var request =
         {
             nombre:this.formData.nombre,
@@ -209,10 +223,8 @@ var NuevoVino = React.createClass({
             return true;
         }).fail( function(xhr, textStatus, errorThrown) {
             console.log("Fail:"+textStatus);
-            return;
         });
-        this.history.pushState(null, `/`);
-        return;
+        /*this.history.pushState(null, `/`);*/
     }
 });
 

@@ -34,6 +34,11 @@ var VinoStore = Reflux.createStore({
         this.trigger(this.getBodegas());
     },
 
+    onSaveBodega: function (bodega) {
+        this.bodegas.push(bodega);
+        this.trigger(this.getBodegas());
+    },
+
     onSetUvas: function (uvas) {
         this.uvas = uvas;
         this.trigger(this.getUvas());

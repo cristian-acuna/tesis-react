@@ -27,15 +27,12 @@
 
     var App = React.createClass({
 
-        mixins: [Reflux.listenTo(UserStore, 'onLoginUser'),
-            Reflux.connect(VinoStore,"onSaveBodega")
-        ],
+        mixins: [Reflux.listenTo(UserStore, 'onLoginUser')],
 
         getInitialState: function () {
             return {
-                currentTab: 0,
                 userSession: {},
-                showModal: false
+                showModal: true
             };
         },
 
@@ -79,13 +76,13 @@
             }).done(function( data ) {
                 VinoActions.setTipos(data);
             }.bind(this));
-
-            return;
         },
 
         onLoginUser: function(usuario) {
-            usuario.nombre!=undefined?this.close() : this.open();
-            this.setState({ userSession: usuario });
+            usuario.nombre != undefined ? this.close() : this.open();
+            this.setState({
+                userSession: usuario
+            });
         },
 
         close() {
@@ -96,20 +93,16 @@
             this.setState({ showModal: true });
         },
 
-        changeTab: function (index) {
-            this.setState({currentTab: index});
-        },
-
         render: function () {
             const { pathname } = this.props.location
 
             return (
                 <div>
-                    <Modal keyboard={false} show={this.state.showModal} className="login-modal" onHide={this.close}>
+                    <Modal backdrop={false} keyboard={false} show={this.state.showModal} className="login-modal" onHide={this.close}>
                         <Login onClose={this.close}/>
                     </Modal>
                     <Headroom>
-                        <Navegacion user={this.state.userSession} projectName="Somellier" changeTab={this.changeTab}/>
+                        <Navegacion user={this.state.userSession} projectName="Somellier" />
                     </Headroom>
                     <div className="section-container">
                         {React.cloneElement(this.props.children || <div />, { key: pathname })}
@@ -122,12 +115,12 @@
     React.render((
         <Router history={history}>
             <Route path="/" component={App}>
-                <IndexRoute component={Home}/>
+                <IndexRoute component={Home} />
                 <Route path="/busqueda" component={Busqueda} />
                 <Route path="/nuevo" component={NuevoVino} />
-                <Route path="/registro" component={Registro}/>
-                <Route path="/ver" component={VerVino}/>
-                <Route path="/wishlist" component={Wishlist}/>
+                <Route path="/registro" component={Registro} />
+                <Route path="/ver" component={VerVino} />
+                <Route path="/wishlist" component={Wishlist} />
             </Route>
         </Router>
     ), document.getElementById('content'));

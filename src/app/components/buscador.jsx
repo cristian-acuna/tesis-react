@@ -3,8 +3,6 @@ var React = require('react');
 var VinoStore = require('../stores/vinostore');
 
 var Input = require('react-bootstrap').Input;
-var ButtonToolbar = require('react-bootstrap').ButtonToolbar;
-var SplitButton = require('react-bootstrap').SplitButton;
 var MenuItem = require('react-bootstrap').MenuItem;
 var Dropdown = require('react-bootstrap').Dropdown;
 var Glyphicon = require('react-bootstrap').Glyphicon;
@@ -100,7 +98,7 @@ var InstantBox = React.createClass({
 
     deleteFiltro:function(unselected){
         var newData = this.state.selectedValues.slice(); //copy array
-        var unselectedIndex = this.state.selectedValues.map(function (item, index) {
+        this.state.selectedValues.map(function (item, index) {
             item.filtro == unselected? newData.splice(index, 1):''}, this); //delete item
         this.setState({selectedValues: newData}); //update state
         var stateObject = function() {

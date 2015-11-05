@@ -1,6 +1,5 @@
 var React = require('react');
 var Bootstrap = require('react-bootstrap');
-var Reflux = require('reflux');
 var moment = require('moment');
 
 var Input = require('react-bootstrap').Input;
@@ -8,12 +7,13 @@ var Panel = require('react-bootstrap').Panel;
 var FormData = require('react-form-data');
 var Link = require('react-router').Link;
 var VinoActions = require('../actions/vinoactions');
-var VinoStore = require('../stores/vinostore');
+
+var provincias = require('../data/provincias')
 
 
 var NuevaBodega = React.createClass({
 
-    mixins: [ FormData, Reflux.connect(VinoStore,"onSaveBodega")],
+    mixins: [ FormData ],
 
     render: function () {
         var options = [];
@@ -33,7 +33,9 @@ var NuevaBodega = React.createClass({
                         {options}
                     </Input>
                     <Input name="ciudad" type="text" label="ciudad" placeholder="Ingrese una ciudad"/>
-                    <Input name="provincia" type="text" label="provincia" placeholder="Ingrese una provincia"/>
+                    <Input name="provincia" type="select" label="provincia" placeholder="Seleccione ...">
+                        {provincias.map(function(provincia){return (<option value={provincia.value}>{provincia.provincia}</option>)})}
+                    </Input>
                     <Input name="pais" type="text" label="pais" placeholder="Ingrese un pais"/>
                     <Input name="link" type="text" label="link" placeholder="Ingrese un link"/>
                     <Input type="submit" className="btn btn-login" value="guardar"/>
@@ -42,6 +44,7 @@ var NuevaBodega = React.createClass({
         );
     },
     handleSubmit: function(e) {
+        e.preventDefault();
         var request =
         {
             nombre: this.formData.nombre,
@@ -56,7 +59,6 @@ var NuevaBodega = React.createClass({
         };
         $.ajax({
             url: "http://localhost:8080/bodega/registrar",
-            async: false,
             method: "POST",
             crossOrigin: true,
             contentType:"application/json",
@@ -68,7 +70,6 @@ var NuevaBodega = React.createClass({
         }).fail( function(xhr, textStatus, errorThrown) {
             console.log("Fail:"+textStatus);
         });
-        this.props.onClose();
     }
 });
 

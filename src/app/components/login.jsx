@@ -8,12 +8,11 @@ var FormData = require('react-form-data');
 var Header = require('./header.jsx');
 var Link = require('react-router').Link;
 var UserActions = require('../actions/usuarioactions');
-var UserStore = require('../stores/userstore');
 
 
 var Login = React.createClass({
 
-    mixins: [ FormData, Reflux.connect(UserStore,"onLoginUser")],
+    mixins: [ FormData ],
 
     render: function () {
         return (
@@ -42,11 +41,9 @@ var Login = React.createClass({
             data : this.formData
         }).done(function( data ) {
             UserActions.loginUser(data);
-            return true;
-        })
-            .fail( function(xhr, textStatus, errorThrown) {
-                console.log("Fail:"+textStatus);
-            });
+        }).fail( function(xhr, textStatus, errorThrown) {
+            console.log("Fail:"+textStatus);
+        });
     }
 });
 
