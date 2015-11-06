@@ -37,11 +37,14 @@ var Navegacion = React.createClass({
             <span className="icon-nav glyphicon glyphicon-user" />{this.props.user.nombre?this.props.user.nombre:'Usuario'}
         </span>
         );
-
+        var style = {
+            height: '50px',
+            display: 'inline'
+        };
         return (
             <Navbar className="navbar navbar-inverse">
                 <a className="navigation-title" href="/">{this.props.projectName}</a>
-                <Nav className="nav navbar-nav">
+                <Nav className="nav navbar-nav" styles={style}>
                     <Link className="bar-item" to={`/`}><span className="icon-nav glyphicon glyphicon-home"/>Home</Link>
                     <Link className="bar-item" to={`/busqueda`}><span className="icon-nav glyphicon glyphicon-search"/>Busqueda</Link>
                     <Link className="bar-item" to={`/wishlist`}><span className="icon-nav glyphicon glyphicon-glass"/>Wishlist</Link>

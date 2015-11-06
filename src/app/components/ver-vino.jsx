@@ -53,10 +53,13 @@ var VerVino = React.createClass({
             const tooltipFav = (
                 <Tooltip>Haciendo click aqui puede agregar este vino a su Wishlist personal. Su Wishlist le permitira llevar un registro de aquellos hallazgos que le gustaria recordar para proximas ocaciones. Puede acceder a esta seccion desde la barra superior de navegacion.</Tooltip>
             );
-            const innerButton = <Button onClick={this.onCostear}>
-                <Glyphicon style={{marginRight: 10 + 'px'}} glyph="usd" />
-                Ok
-            </Button>;
+            const innerButton =
+                    <Button onClick={this.onCostear}>
+                        <Glyphicon style={{marginRight: 10 + 'px'}} glyph="usd" />
+                        Ok
+                    </Button>;
+
+            var decodedImg = 'data:image/png;base64,'.concat(this.state.vino.imagen);
             return (
                 <div>
                     <Header return="/busqueda" text="Ver Vino" back="true"/>
@@ -72,7 +75,7 @@ var VerVino = React.createClass({
                                 <span onClick={this.onWish} className="ver-vino--wishlist"><Glyphicon glyph={this.state.wish}/></span>
                             </OverlayTrigger>
                             </OverlayTrigger>
-                            <img className="ver-vino--descripcion-img" src="http://www.mujeresycia.com/uploads/img/Foto-botella.jpg"/>
+                            <img className="ver-vino--descripcion-img" src={decodedImg}/>
                             <span className="ver-vino--descripcion-texto">{this.state.vino.descripcion}</span>
                             <span className="ver-vino--descripcion-envejecimiento">envejecimiento</span>
                             <OverlayTrigger overlay={tooltip}>
@@ -140,6 +143,7 @@ var VerVino = React.createClass({
             vino: this.state.vino.id
         };
         this.ajaxCall("http://localhost:8080/vino/valorar","POST", JSON.stringify(request));
+        this.getPrecioPromedio();
         this.setState({
             openCostear: !this.state.openCostear
         });

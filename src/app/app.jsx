@@ -32,7 +32,7 @@
         getInitialState: function () {
             return {
                 userSession: {},
-                showModal: true
+                showModal: false
             };
         },
 

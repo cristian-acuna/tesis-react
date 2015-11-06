@@ -4,14 +4,15 @@ var Reflux = require('reflux');
 var moment = require('moment');
 var Dropzone = require('react-dropzone');
 
-var Input = require('react-bootstrap').Input;
-var Button = require('react-bootstrap').Button;
-var Modal = require('react-bootstrap').Modal;
-var Glyphicon = require('react-bootstrap').Glyphicon;
+var Input = Bootstrap.Input;
+var Button = Bootstrap.Button;
+var Modal = Bootstrap.Modal;
+var Glyphicon = Bootstrap.Glyphicon;
 var FormData = require('react-form-data');
 var Header = require('./header.jsx');
 var NuevaBodega = require('./nueva-bodega.jsx');
-var Panel = require('react-bootstrap').Panel;
+var Panel = Bootstrap.Panel;
+var Thumbnail = Bootstrap.Thumbnail;
 
 var VinoActions = require('../actions/vinoactions');
 var VinoStore = require('../stores/vinostore');
@@ -24,35 +25,23 @@ var NuevoVino = React.createClass({
 
     mixins: [ FormData, history, Reflux.listenTo(VinoStore,"onSaveBodega")],
 
-   /* getBase64Image: function (img) {
-    var canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-    var dataURL = canvas.toDataURL("image/png");
-
-    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-    },*/
-
     readURL: function (files) {
         var self = this;
         var reader = new FileReader();
         var file = files[0];
         reader.onloadend = function (upload) {
+            var codedImg = upload.target.result.replace("data:"+ file.type +";base64,", '');
             self.setState({
-                image_uri: upload.target.result
+                image_uri: codedImg
             });
         };
-
         reader.readAsDataURL(file);
     },
 
     getInitialState: function() {
         return {
             image_uri: '',
-            vinoImgs: {},
+            vinoImgs: [],
             bodegas: [],
             edades: [],
             tipos: [],
@@ -137,17 +126,20 @@ var NuevoVino = React.createClass({
                                 </span>
                             </div>
                             <div className="nuevo-vino-form--main-info-visor">
-                                <Dropzone className="nuevo-vino-form--main-info-visor-drop" onDrop={this.onDrop}>
-                                    <div>Intente arrastrar una imagen aqui, o clickee para seleccionar una.</div>
-                                </Dropzone>
                                 {this.state.vinoImgs.length > 0 ?
                                     <div>
-                                        {this.state.vinoImgs.map((file) =>
-                                            <img className="nuevo-vino-form--main-info-visor-img" src={file.preview} />
-                                        )}
-                                    </div> : null
+                                        <div className="nuevo-vino-form--main-info-visor-frame">
+                                            <img className="nuevo-vino-form--main-info-visor-img" src={this.state.vinoImgs[0].preview} />
+                                        </div>
+                                        <p>Esa imagen se usara como portada para el vino</p>
+                                        <p>
+                                            <Button className="nuevo-vino-form--main-info-visor-boton" bsStyle="default" onClick={ ()=> this.setState({ vinoImgs: [] })}>Eliminar</Button>&nbsp;
+                                        </p>
+                                    </div> :
+                                    <Dropzone className="nuevo-vino-form--main-info-visor-drop" onDrop={this.onDrop}>
+                                        <div>Intente arrastrar una imagen aqui, o clickee para seleccionar una.</div>
+                                    </Dropzone>
                                 }
-                                <img id="blah" src={this.state.image_uri} alt="your image" />
                             </div>
                         </div>
                         <div className="nuevo-vino-form--more-info">
@@ -207,7 +199,8 @@ var NuevoVino = React.createClass({
             tipoVino: parseInt(this.formData.tipoVino),
             bodega: parseInt(this.formData.bodega),
             uva: parseInt(this.formData.uva),
-            edad: parseInt(this.formData.edad)
+            edad: parseInt(this.formData.edad),
+            imagen: this.state.image_uri
         };
 
         $.ajax({

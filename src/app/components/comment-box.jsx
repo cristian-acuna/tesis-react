@@ -32,7 +32,7 @@ var CommentBox = React.createClass({
             <div className="comment-box">
                 <div>
                     <span className="comment-box--input">
-                        <Input bsSize="small" ref="commentInput" type="textarea" placeholder="Ingrese su comentario" buttonAfter={innerButton} />
+                        <Input bsSize="small" ref="commentInput" type="text" placeholder="Ingrese su comentario" buttonAfter={innerButton} />
                     </span>
                 </div>
                 {this.state.comentarios.map(
@@ -45,7 +45,7 @@ var CommentBox = React.createClass({
                         </p>;
                         return <div className="comment">
                                     <span>
-                                        <b>
+                                        <b style={{color: 'mediumpurple'}}>
                                             {comentario.usuario.nombre+' '+comentario.usuario.apellido}
                                         </b> comento:
                                     </span>
