@@ -37,6 +37,7 @@ var VerVino = React.createClass({
     onVinoElegido: function(vino) {
         this.setState({ vino: vino });
         this.getPrecioPromedio();
+        this.getRatingPromedio();
         this.isWished();
     },
 
@@ -99,7 +100,7 @@ var VerVino = React.createClass({
                             <span className="ver-vino--descripcion-precio">${this.state.costoPromedio}</span>
                             <OverlayTrigger trigger="click" rootClose placement="left" overlay={<Popover title={<strong>"Gracias por tu calificacion!!"</strong>}>Tu opinion contribuye a mejorar la experiencia Somellier.</Popover>}>
                                 <div className="ver-vino--descripcion-rating">
-                                    "Como calificaría a este vino?"<Rating fractions={2} onChange={this.onRate}/>
+                                    "Como calificaría a este vino?"<Rating fractions={2} onChange={this.onRate} initialRate={4} />
                                 </div>
                             </OverlayTrigger>
                         </div>
@@ -192,6 +193,25 @@ var VerVino = React.createClass({
 
         $.ajax({
             url: "http://localhost:8080/vino/precio",
+            method: "GET",
+            contentType:"application/json",
+            dataType: "json",
+            data : request
+        }).done(function( promedio ) {
+            this.setState({
+                costoPromedio: promedio
+            });
+        }.bind(this));
+    },
+
+    getRatingPromedio: function () {
+        var request =
+        {
+            id: this.state.vino.id
+        };
+
+        $.ajax({
+            url: "http://localhost:8080/vino/rating",
             method: "GET",
             contentType:"application/json",
             dataType: "json",

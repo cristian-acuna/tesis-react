@@ -20,6 +20,11 @@ var WineItem = React.createClass({
             <Button onClick={this.deleteWish} className="comment--button" bsStyle="link">
                 <Glyphicon glyph="trash"/>
             </Button>
+        var editButton =
+            <Button onClick={this.editarVino} className="vino-list-item--edit" bsStyle="link">
+                <Glyphicon glyph="pencil"/>
+            </Button>
+        var decodedImg = 'data:image/png;base64,'.concat(this.props.data.imagen);
 
         if(this.props.data.nombre !== undefined) {
             content = (
@@ -28,6 +33,9 @@ var WineItem = React.createClass({
                     {this.props.puedeBorrar ? deleteButton : null}
                     <span className="vino-list-item--name">{this.props.data.nombre}</span>
                     <Label className="vino-list-item--grapes">{this.props.data.uva.nombre}</Label>
+                    <div className="vino-list-item--frame">
+                        <img className="vino-list-item--image" src={decodedImg} />
+                    </div>
                     <div className="vino-list-item--description">{this.props.data.descripcion}</div>
                     <div className="vino-list-item--location">
                         <span>{this.props.data.bodega.residencia.provincia.descripcion + "  |  "}</span>
@@ -36,6 +44,7 @@ var WineItem = React.createClass({
                     <div className="vino-list-item--year">
                         <span className="vino-list-item--year-text">{"- "+this.props.data.cosecha+" -"}</span>
                     </div>
+                    {editButton}
                     <div className="vino-list-item--button">
                         <Input type="submit"
                                onClick={this.openDetail}
@@ -73,6 +82,11 @@ var WineItem = React.createClass({
         }).done(function( data ) {
             VinoActions.setWishlist(data);
         }.bind(this));
+    },
+
+    editarVino:function(){
+        VinoActions.vinoElegido(this.props.data);
+        this.history.pushState(null, `/nuevo`);
     }
 });
 
