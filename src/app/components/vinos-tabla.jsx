@@ -8,7 +8,7 @@ var VinosTabla = React.createClass({
         if(this.props.data.length!=0) {
             return (
                 <div>
-                    {this.props.data.map(function (vino, i) {return <ListItem puedeBorrar={this.props.onWishlist} key={i} data={vino}/>;}.bind(this))}
+                    {this.props.data.map(function (vino, i) {return <ListItem deleteWish={this.props.deleteWish} puedeBorrar={this.props.onWishlist} key={i} data={vino}/>;}.bind(this))}
                 </div>
             );
         }

@@ -67,6 +67,8 @@ var WineItem = React.createClass({
     },
 
     deleteWish:function(){
+        this.props.deleteWish;
+        /*
         var wishToDelete = {
             usuario: 1,
             vino: this.props.data.id
@@ -81,7 +83,7 @@ var WineItem = React.createClass({
             data : JSON.stringify(wishToDelete)
         }).done(function( data ) {
             VinoActions.setWishlist(data);
-        }.bind(this));
+        }.bind(this));*/
     },
 
     editarVino:function(){

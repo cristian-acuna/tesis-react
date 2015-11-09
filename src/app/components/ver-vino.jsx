@@ -13,7 +13,6 @@ var Button = Bootstrap.Button;
 var Fade = Bootstrap.Fade;
 var Input = Bootstrap.Input;
 
-
 var Rating = require('react-rating');
 var Header = require('./header.jsx');
 var history = require('react-router').History;
@@ -26,11 +25,12 @@ var VerVino = React.createClass({
 
     getInitialState: function () {
         return {
-            openCostear: '',
-            msjWish: '',
             costoPromedio: '',
-            wish: 'star-empty',
-            vino: {}
+            msjWish: '',
+            openCostear: '',
+            rating: 0,
+            vino: {},
+            wish: 'star-empty'
         };
     },
 
@@ -59,8 +59,10 @@ var VerVino = React.createClass({
                         <Glyphicon style={{marginRight: 10 + 'px'}} glyph="usd" />
                         Ok
                     </Button>;
+            var decodedImg = this.state.vino.imagen ?
+                "data:image/png;base64,".concat(this.state.vino.imagen) :
+                "botella.jpg";
 
-            var decodedImg = 'data:image/png;base64,'.concat(this.state.vino.imagen);
             return (
                 <div>
                     <Header return="/busqueda" text="Ver Vino" back="true"/>
@@ -70,11 +72,10 @@ var VerVino = React.createClass({
                         </PageHeader>
                         <div className="ver-vino--descripcion">
                             <span className="ver-vino--cosecha">{this.state.vino.cosecha}</span>
-
                             <OverlayTrigger trigger="click" rootClose placement="left" overlay={<Popover title="Aviso"><strong>{this.state.msjWish}</strong> Visite Wishlist para ver sus vinos.</Popover>}>
-                            <OverlayTrigger overlay={tooltipFav}>
-                                <span onClick={this.onWish} className="ver-vino--wishlist"><Glyphicon glyph={this.state.wish}/></span>
-                            </OverlayTrigger>
+                                <OverlayTrigger overlay={tooltipFav}>
+                                    <span onClick={this.onWish} className="ver-vino--wishlist"><Glyphicon glyph={this.state.wish}/></span>
+                                </OverlayTrigger>
                             </OverlayTrigger>
                             <img className="ver-vino--descripcion-img" src={decodedImg}/>
                             <span className="ver-vino--descripcion-texto">{this.state.vino.descripcion}</span>
@@ -86,21 +87,35 @@ var VerVino = React.createClass({
                             </OverlayTrigger>
                             <div className="ver-vino--costear-container">
                                 <OverlayTrigger placement="left" overlay={tooltipCosto}>
-                                    <Button bsStyle="default" className="ver-vino--costear-boton" onClick={ ()=> this.setState({ openCostear: !this.state.openCostear })}>
+                                    <Button bsStyle="default"
+                                            className="ver-vino--costear-boton"
+                                            onClick={ ()=> this.setState({ openCostear: !this.state.openCostear })}>
                                         Costear Vino
                                     </Button>
                                 </OverlayTrigger>
                                 <Fade in={this.state.openCostear}>
                                     <div className="ver-vino--costear-area">
-                                        <Input type="number" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" bsSize="small" ref="precioInput" placeholder="Ingrese un precio" buttonAfter={innerButton} />
+                                        <Input type="number"
+                                               min="0"
+                                               step="0.01"
+                                               data-number-to-fixed="2"
+                                               data-number-stepfactor="100"
+                                               bsSize="small"
+                                               ref="precioInput"
+                                               placeholder="Ingrese un precio"
+                                               buttonAfter={innerButton} />
                                     </div>
                                 </Fade>
                             </div>
                             <span className="ver-vino--descripcion-precio-label">precio sugerido</span>
                             <span className="ver-vino--descripcion-precio">${this.state.costoPromedio}</span>
-                            <OverlayTrigger trigger="click" rootClose placement="left" overlay={<Popover title={<strong>"Gracias por tu calificacion!!"</strong>}>Tu opinion contribuye a mejorar la experiencia Somellier.</Popover>}>
+                            <OverlayTrigger trigger="click"
+                                            rootClose placement="left"
+                                            overlay={<Popover
+                                            title={<strong>"Gracias por tu calificacion!!"</strong>}>Tu opinion contribuye a mejorar la experiencia Somellier.</Popover>}>
                                 <div className="ver-vino--descripcion-rating">
-                                    "Como calificaría a este vino?"<Rating fractions={2} onChange={this.onRate} initialRate={4} />
+                                    "Como calificaría a este vino?"
+                                    <Rating fractions={2} onChange={this.onRate} initialRate={this.state.rating} />
                                 </div>
                             </OverlayTrigger>
                         </div>
@@ -139,10 +154,10 @@ var VerVino = React.createClass({
 
     onCostear: function() {
         var request =
-        {
-            precio: parseFloat(this.refs.precioInput.getInputDOMNode().value),
-            vino: this.state.vino.id
-        };
+            {
+                precio: parseFloat(this.refs.precioInput.getInputDOMNode().value),
+                vino: this.state.vino.id
+            };
         this.ajaxCall("http://localhost:8080/vino/valorar","POST", JSON.stringify(request));
         this.getPrecioPromedio();
         this.setState({
@@ -176,12 +191,11 @@ var VerVino = React.createClass({
     ajaxCall: function (url, method, object) {
         $.ajax({
             url: url,
+            async: false,
             method: method,
             contentType:"application/json",
             dataType: "json",
             data : object
-        }).done(function( data ) {
-            console.log("EXITO!!!!!!!!!");
         });
     },
 
@@ -216,9 +230,9 @@ var VerVino = React.createClass({
             contentType:"application/json",
             dataType: "json",
             data : request
-        }).done(function( promedio ) {
+        }).done(function( rating ) {
             this.setState({
-                costoPromedio: promedio
+                rating: rating
             });
         }.bind(this));
     },
@@ -242,8 +256,6 @@ var VerVino = React.createClass({
             });
         }.bind(this));
     }
-
-
 });
 
 module.exports = VerVino;

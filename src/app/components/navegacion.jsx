@@ -42,7 +42,7 @@ var Navegacion = React.createClass({
             display: 'inline'
         };
         return (
-            <Navbar className="navbar navbar-inverse">
+            <Navbar className="navbar navbar-inverse" style={{display: "block"}}>
                 <a className="navigation-title" href="/">{this.props.projectName}</a>
                 <Nav className="nav navbar-nav" styles={style}>
                     <Link className="bar-item" to={`/`}><span className="icon-nav glyphicon glyphicon-home"/>Home</Link>

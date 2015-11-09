@@ -14,3 +14,7 @@ var requireDir = require('require-dir');
 
 // Require all tasks in gulp/tasks, including subfolders
 requireDir('./gulp/tasks', { recurse: true });
+
+gulp.task('copy', function(){
+ return gulp.src('botella.jpg').pipe(gulp.dest(''));
+});
