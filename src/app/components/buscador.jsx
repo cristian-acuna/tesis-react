@@ -1,4 +1,5 @@
 var React = require('react');
+var Ajax = require('../data/ajax.jsx');
 
 var VinoStore = require('../stores/vinostore');
 
@@ -44,19 +45,13 @@ var InstantBox = React.createClass({
             tipo: this.state.tipo
         };
 
-        $.ajax({
-            url: "http://localhost:8080/vino/filtrar",
-            asyc: false,
-            method: "GET",
-            contentType:"application/json",
-            dataType: "json",
-            data : searchCriteria
-        }).done(function( data ) {
-            this.setState({
-                query:queryText,
-                filteredData: data
-            })
-        }.bind(this));
+        Ajax.call("http://localhost:8080/vino/filtrar","GET", searchCriteria, this.setFilteredData);
+    },
+
+    setFilteredData: function(data){
+        this.setState({
+            filteredData: data
+        })
     },
 
     selectValue: function(filtro, valor) {
@@ -152,21 +147,11 @@ var InstantBox = React.createClass({
 });
 
 var SearchBox = React.createClass({
-    getInitialState:function(){
-        return{
-            query: ''
-        }
-    },
+    getInitialState:function(){ return{ query: '' }},
 
-    handleInput:function(event){
-        this.setState(
-            { query: event.target.value }
-        )
-    },
+    handleInput:function(event){ this.setState( { query: event.target.value } )},
 
-    doSearch:function(){
-        this.props.doSearch(this.state.query);
-    },
+    doSearch:function(){ this.props.doSearch(this.state.query); },
 
     render:function(){
         const innerButton = <Button onClick={this.doSearch}>

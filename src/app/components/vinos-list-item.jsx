@@ -67,23 +67,7 @@ var WineItem = React.createClass({
     },
 
     deleteWish:function(){
-        this.props.deleteWish;
-        /*
-        var wishToDelete = {
-            usuario: 1,
-            vino: this.props.data.id
-        };
-
-        $.ajax({
-            url: "http://localhost:8080/wishlist/wish",
-            async: false,
-            method: "POST",
-            contentType: "application/json",
-            dataType: "json",
-            data : JSON.stringify(wishToDelete)
-        }).done(function( data ) {
-            VinoActions.setWishlist(data);
-        }.bind(this));*/
+        this.props.ondeleteWish(this.props.data.id);
     },
 
     editarVino:function(){

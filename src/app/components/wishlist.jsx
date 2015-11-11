@@ -1,11 +1,15 @@
 var React = require('react');
 var Reflux = require('reflux');
+var Ajax = require('../data/ajax.jsx');
 
 var Header = require('./header.jsx');
 var VinosTabla = require('./vinos-tabla.jsx');
-var Modal = require('react-bootstrap').Modal;
-var Button = require('react-bootstrap').Button;
-
+var Bootstrap = require('react-bootstrap')
+var Modal = Bootstrap.Modal;
+var Button = Bootstrap.Button;
+var Rating = require('react-rating');
+var Glyphicon = Bootstrap.Glyphicon;
+var Input = Bootstrap.Input;
 var VinoActions = require('../actions/vinoactions');
 var VinoStore = require('../stores/vinostore');
 
@@ -15,8 +19,22 @@ var Wishlist = React.createClass({
 
     getInitialState: function() {
         return {
-            wishlist: []
+            wishlist: [],
+            showModal: false,
+            rating: 2.5,
+            vino:{}
         };
+    },
+
+    close() {
+        this.setState({ showModal: false });
+    },
+
+    open(idVino) {
+        this.setState({
+            showModal: true,
+            vino: idVino
+        });
     },
 
     onSetWishlist: function(wishlist) {
@@ -24,24 +42,10 @@ var Wishlist = React.createClass({
     },
 
     componentDidMount: function() {
-        var currentUser = {
-            id: 1
-        };
-        $.ajax({
-            url: "http://localhost:8080/wishlist/listar",
-            async:false,
-            method: "GET",
-            contentType:"application/json",
-            dataType: "json",
-            data : currentUser
-        }).done(function( data ) {
-                this.setState({
-                    wishlist: data
-                });
-        }.bind(this));
-
-        return;
+        Ajax.call("http://localhost:8080/wishlist/listar","GET", {id: 1}, this.setWishlist);
     },
+
+    setWishlist: function(data) { this.setState({ wishlist: data }); },
 
     render: function () {
         return (
@@ -49,31 +53,22 @@ var Wishlist = React.createClass({
                 <Header return="/" text="Wishlist" back="true"/>
                 <Modal show={this.state.showModal} onHide={this.close}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Modal heading</Modal.Title>
+                        <Modal.Title>Estas por borrar un vino de tu wishlist?</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <h4>Text in a modal</h4>
-                        <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
-
-                        <h4>Popover in a modal</h4>
-
-                        <h4>Tooltips in a modal</h4>
-
-                        <hr />
-
-                        <h4>Overflowing text to show scroll behavior</h4>
-                        <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                        <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-                        <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                        <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-                        <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                        <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                        <h4>Queremos conocer tu opinion</h4>
+                        <p>En Somellier nos interesa saber que piensan nuestros usuarios sobre cada vino que tienen la oportunidad de probar. Ahora que probablemente ya hayas probado este vino dejanos tus pensamientos y calificacion sobre tu experiencia.</p>
+                        <Input ref="commentInput"
+                               rows="4"
+                               name="descripcion"
+                               type="textarea"
+                               placeholder="Ingrese un comentario"/>
+                        <div className="wishlist--modal-rating">
+                            <Rating empty={'glyphicon glyphicon-star-empty'} full={'glyphicon glyphicon-star'} fractions={2} onChange={this.onRate} initialRate={this.state.rating} />
+                        </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.close}>Close</Button>
+                        <Button className="wishlist--modal-boton" onClick={this.onCerrar}>aceptar</Button>
                     </Modal.Footer>
                 </Modal>
                 <div className="busqueda-filtro">
@@ -91,7 +86,7 @@ var Wishlist = React.createClass({
                     </div>
                 </div>
                 <div className="busqueda-resultados">
-                    <VinosTabla onWishlist={true} data={this.state.wishlist}/>
+                    <VinosTabla ondeleteWish={this.open} onWishlist={true} data={this.state.wishlist}/>
                     <div className="container-fluid">
                         <hr/>
                         <div className="row">
@@ -105,6 +100,39 @@ var Wishlist = React.createClass({
                 </div>
             </div>
         );
+    },
+
+    onCerrar: function() {
+        var requestRate =
+        {
+            rate: this.state.rating,
+            usuario: 1,/*(UserStore.getUserSession()).id,*/
+            vino: this.state.vino
+        };
+
+        var requestComment =
+        {
+            comentario: this.refs.commentInput.getInputDOMNode().value,
+            usuario: 1,
+            vino: this.state.vino
+        };
+
+        var requestWish =
+        {
+            usuario: 1,
+            vino: this.state.vino
+        };
+
+        Ajax.call("http://localhost:8080/vino/rate","POST", JSON.stringify(requestRate), null);
+        Ajax.call("http://localhost:8080/vino/comentar","POST", JSON.stringify(requestComment), null);
+        Ajax.call("http://localhost:8080/wishlist/wish","POST", JSON.stringify(requestWish),null);
+        Ajax.call("http://localhost:8080/wishlist/listar","GET", {id: 1}, this.setWishlist);
+
+        this.close();
+    },
+
+    onRate: function(rating) {
+        this.setState({ rating: rating });
     }
 });
 

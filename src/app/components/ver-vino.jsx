@@ -2,6 +2,7 @@ var React = require('react');
 var Bootstrap = require('react-bootstrap');
 var Reflux = require('reflux');
 var UserStore = require('../stores/userstore');
+var Ajax = require('../data/ajax.jsx');
 
 var PageHeader = Bootstrap.PageHeader;
 var Tooltip = Bootstrap.Tooltip;
@@ -36,9 +37,13 @@ var VerVino = React.createClass({
 
     onVinoElegido: function(vino) {
         this.setState({ vino: vino });
-        this.getPrecioPromedio();
-        this.getRatingPromedio();
-        this.isWished();
+
+        var request = { id: this.state.vino.id };
+        var requestWish = { usuario: 1, vino: this.state.vino.id };
+
+        Ajax.call("http://localhost:8080/vino/precio", "GET", request, this.setCosto);
+        Ajax.call("http://localhost:8080/vino/rating", "GET", request, this.setRating);
+        Ajax.call("http://localhost:8080/wishlist/iswish", "POST", JSON.stringify(requestWish), this.setWish);
     },
 
     render: function () {
@@ -158,11 +163,9 @@ var VerVino = React.createClass({
                 precio: parseFloat(this.refs.precioInput.getInputDOMNode().value),
                 vino: this.state.vino.id
             };
-        this.ajaxCall("http://localhost:8080/vino/valorar","POST", JSON.stringify(request));
-        this.getPrecioPromedio();
-        this.setState({
-            openCostear: !this.state.openCostear
-        });
+        Ajax.call("http://localhost:8080/vino/valorar","POST", JSON.stringify(request),null);
+        Ajax.call("http://localhost:8080/vino/precio", "GET", request, this.setCosto);
+        this.setState({ openCostear: !this.state.openCostear });
     },
 
     onWish: function() {
@@ -171,7 +174,7 @@ var VerVino = React.createClass({
             usuario: 1,
             vino: this.state.vino.id
         };
-        this.ajaxCall("http://localhost:8080/wishlist/wish","POST", JSON.stringify(request));
+        Ajax.call("http://localhost:8080/wishlist/wish","POST", JSON.stringify(request),null);
         this.setState({
             wish: this.state.wish == 'star'? 'star-empty':'star',
             msjWish: this.state.wish == 'star'? 'El vino ha sido removido de su Wishlist':'El vino ha sido guardado en su Wishlist!'
@@ -185,76 +188,19 @@ var VerVino = React.createClass({
             usuario: 1,/*(UserStore.getUserSession()).id,*/
             vino: this.state.vino.id
         };
-        this.ajaxCall("http://localhost:8080/vino/rate","POST", JSON.stringify(request));
+        Ajax.call("http://localhost:8080/vino/rate","POST", JSON.stringify(request),null);
     },
 
-    ajaxCall: function (url, method, object) {
-        $.ajax({
-            url: url,
-            async: false,
-            method: method,
-            contentType:"application/json",
-            dataType: "json",
-            data : object
-        });
+    setCosto: function (promedio) {
+        this.setState({ costoPromedio: promedio });
     },
 
-    getPrecioPromedio: function () {
-        var request =
-        {
-            id: this.state.vino.id
-        };
-
-        $.ajax({
-            url: "http://localhost:8080/vino/precio",
-            method: "GET",
-            contentType:"application/json",
-            dataType: "json",
-            data : request
-        }).done(function( promedio ) {
-            this.setState({
-                costoPromedio: promedio
-            });
-        }.bind(this));
+    setRating: function (rating) {
+        this.setState({ rating: rating });
     },
 
-    getRatingPromedio: function () {
-        var request =
-        {
-            id: this.state.vino.id
-        };
-
-        $.ajax({
-            url: "http://localhost:8080/vino/rating",
-            method: "GET",
-            contentType:"application/json",
-            dataType: "json",
-            data : request
-        }).done(function( rating ) {
-            this.setState({
-                rating: rating
-            });
-        }.bind(this));
-    },
-
-    isWished: function () {
-        var request =
-        {
-            usuario: 1,
-            vino: this.state.vino.id
-        };
-
-        $.ajax({
-            url: "http://localhost:8080/wishlist/iswish",
-            method: "POST",
-            contentType:"application/json",
-            dataType: "json",
-            data : JSON.stringify(request)
-        }).done(function( isWished ) {
-            this.setState({
-                wish: isWished ? 'star' : 'star-empty'
-            });
-        }.bind(this));
+    setWish: function (isWished) {
+        this.setState({ wish: isWished ? 'star' : 'star-empty' });
     }
 });
 

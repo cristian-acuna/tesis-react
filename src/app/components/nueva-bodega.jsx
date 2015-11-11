@@ -1,6 +1,7 @@
 var React = require('react');
 var Bootstrap = require('react-bootstrap');
 var moment = require('moment');
+var Ajax = require('../data/ajax.jsx');
 
 var Input = require('react-bootstrap').Input;
 var Panel = require('react-bootstrap').Panel;
@@ -8,7 +9,7 @@ var FormData = require('react-form-data');
 var Link = require('react-router').Link;
 var VinoActions = require('../actions/vinoactions');
 
-var provincias = require('../data/provincias')
+var provincias = require('../data/provincias');
 
 
 var NuevaBodega = React.createClass({
@@ -57,20 +58,11 @@ var NuevaBodega = React.createClass({
                 pais: this.formData.pais
             }
         };
-        $.ajax({
-            url: "http://localhost:8080/bodega/registrar",
-            method: "POST",
-            crossOrigin: true,
-            contentType:"application/json",
-            dataType: "json",
-            data: JSON.stringify(request)
-        }).done(function( data ) {
-            VinoActions.saveBodega(data);
-            return true;
-        }).fail( function(xhr, textStatus, errorThrown) {
-            console.log("Fail:"+textStatus);
-        });
-    }
+
+        Ajax.call("http://localhost:8080/bodega/registrar","POST", JSON.stringify(request), this.setBodega);
+    },
+
+    setBodega: function(data) { VinoActions.saveBodega(data); }
 });
 
 module.exports = NuevaBodega;

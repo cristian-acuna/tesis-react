@@ -13,4 +13,3 @@ var SelectedFilter = React.createClass({
 });
 
 module.exports = SelectedFilter;
-

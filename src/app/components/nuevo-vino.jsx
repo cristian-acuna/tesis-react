@@ -2,8 +2,9 @@ var React = require('react');
 var Bootstrap = require('react-bootstrap');
 var Reflux = require('reflux');
 var moment = require('moment');
-var Dropzone = require('react-dropzone');
+var Ajax = require('../data/ajax.jsx');
 
+var Dropzone = require('react-dropzone');
 var Input = Bootstrap.Input;
 var Button = Bootstrap.Button;
 var Modal = Bootstrap.Modal;
@@ -110,7 +111,6 @@ var NuevoVino = React.createClass({
                 <option value={i}>{i}</option>
             )
         }
-
 
         return (
             <div>
@@ -238,21 +238,11 @@ var NuevoVino = React.createClass({
             usuario: 1
         };
 
-        $.ajax({
-            url: "http://localhost:8080/vino/registrar",
-            async: false,
-            method: "POST",
-            crossOrigin: true,
-            contentType:"application/json",
-            dataType: "json",
-            data: JSON.stringify(request)
-        }).done(function( data ) {
-            VinoActions.saveVino(data);
-        }).fail( function(xhr, textStatus, errorThrown) {
-            console.log("Fail:"+textStatus);
-        });
+        Ajax.call("http://localhost:8080/vino/registrar","POST", JSON.stringify(request), this.setVino);
         this.history.pushState(null, `/busqueda`);
-    }
+    },
+
+    setVino: function (data) { VinoActions.saveVino(data); },
 });
 
 module.exports = NuevoVino;

@@ -1,6 +1,7 @@
 var React = require('react');
 var Bootstrap = require('react-bootstrap');
 var Reflux = require('reflux');
+var Ajax = require('../data/ajax.jsx');
 
 var Button = Bootstrap.Button;
 var Glyphicon = Bootstrap.Glyphicon;
@@ -20,13 +21,12 @@ var CommentBox = React.createClass({
             id: this.props.vino.id
         };
 
-        this.ajaxCall("http://localhost:8080/vino/comentarios","GET", commentsCriteria);
+        Ajax.call("http://localhost:8080/vino/comentarios","GET", commentsCriteria,  this.setComentarios);
     },
 
     render: function () {
         const innerButton = <Button onClick={this.doComment}>
-                                <Glyphicon style={{marginRight: 10 + 'px'}} glyph="comment" />
-                                comentar
+                                <Glyphicon style={{marginRight: 10 + 'px'}} glyph="comment" />comentar
                             </Button>;
         return (
             <div className="comment-box">
@@ -73,7 +73,7 @@ var CommentBox = React.createClass({
             vino: this.props.vino.id
         };
 
-        this.ajaxCall("http://localhost:8080/vino/comentar","POST", JSON.stringify(request));
+        Ajax.call("http://localhost:8080/vino/comentar","POST", JSON.stringify(request), this.setComentarios);
     },
 
     deleteComment: function (event) {
@@ -82,10 +82,17 @@ var CommentBox = React.createClass({
             idVino: this.props.vino.id
         };
 
-        this.ajaxCall("http://localhost:8080/vino/descomentar","GET", commentsCriteria);
+        Ajax.call("http://localhost:8080/vino/descomentar","GET", commentsCriteria, this.setComentarios);
     },
 
-    ajaxCall: function (url, method, object) {
+    setComentarios: function (data) {
+        this.setState({
+            comentarios: data
+        });
+        this.refs.commentInput.getInputDOMNode().value="";
+    }
+
+/*    ajaxCall: function (url, method, object) {
         $.ajax({
             url: url,
             async:false,
@@ -99,7 +106,7 @@ var CommentBox = React.createClass({
             });
             this.refs.commentInput.getInputDOMNode().value="";
         }.bind(this));
-    }
+    }*/
 });
 
 module.exports = CommentBox;

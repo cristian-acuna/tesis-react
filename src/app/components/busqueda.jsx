@@ -1,5 +1,6 @@
 var React = require('react');
 var Reflux = require('reflux');
+var Ajax = require('../data/ajax.jsx');
 
 var Header = require('./header.jsx');
 var Buscador = require('./buscador.jsx');
@@ -18,21 +19,16 @@ var Busqueda = React.createClass({
     },
 
     componentDidMount: function() {
-        $.ajax({
-            url: "http://localhost:8080/vino/listar",
-            async:false,
-            method: "GET",
-            contentType:"application/json",
-            dataType: "json"
-        }).done(function( data ) {
-            VinoActions.getVinos(data);
-            if (this.isMounted()) {
-                this.setState({
-                    vinos: data
-                });
-            }
-            return true;
-        }.bind(this));
+        Ajax.call("http://localhost:8080/vino/listar","GET", '', this.setVinos);
+    },
+
+    setVinos: function(data) {
+        VinoActions.getVinos(data);
+        if (this.isMounted()) {
+            this.setState({
+                vinos: data
+            });
+        }
     },
 
     render: function () {
@@ -66,4 +62,5 @@ var Busqueda = React.createClass({
         );
     }
 });
+
 module.exports = Busqueda;
