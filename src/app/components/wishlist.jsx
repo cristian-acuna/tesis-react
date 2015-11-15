@@ -87,7 +87,6 @@ var Wishlist = React.createClass({
                 </div>
                 <div className="busqueda-resultados">
                     <VinosTabla ondeleteWish={this.open} onWishlist={true} data={this.state.wishlist}/>
-                    <div className="container-fluid">
                         <hr/>
                         <div className="row">
                             <div className="col-xs-12">
@@ -96,7 +95,6 @@ var Wishlist = React.createClass({
                                 </footer>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         );

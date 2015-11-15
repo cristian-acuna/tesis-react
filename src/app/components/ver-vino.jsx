@@ -163,8 +163,10 @@ var VerVino = React.createClass({
                 precio: parseFloat(this.refs.precioInput.getInputDOMNode().value),
                 vino: this.state.vino.id
             };
+        var requestPrecio = { id: this.state.vino.id };
+
         Ajax.call("http://localhost:8080/vino/valorar","POST", JSON.stringify(request),null);
-        Ajax.call("http://localhost:8080/vino/precio", "GET", request, this.setCosto);
+        Ajax.call("http://localhost:8080/vino/precio", "GET", requestPrecio, this.setCosto);
         this.setState({ openCostear: !this.state.openCostear });
     },
 

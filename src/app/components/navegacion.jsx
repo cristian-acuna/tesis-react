@@ -21,8 +21,12 @@ var Navegacion = React.createClass({
         this.props.changeTab(tab);
     },
 
-    navigate: function() {
+    navigateToRegistro: function() {
         this.history.pushState(null, `/registro`);
+    },
+
+    navigateToTopList: function() {
+        this.history.pushState(null, `/toplist`);
     },
 
     logOut: function() {
@@ -48,19 +52,19 @@ var Navegacion = React.createClass({
                     <Link className="bar-item" to={`/`}><span className="icon-nav glyphicon glyphicon-home"/>Home</Link>
                     <Link className="bar-item" to={`/busqueda`}><span className="icon-nav glyphicon glyphicon-search"/>Busqueda</Link>
                     <Link className="bar-item" to={`/wishlist`}><span className="icon-nav glyphicon glyphicon-glass"/>Wishlist</Link>
-                    <NavDropdown eventKey={3} title="Vinos">
-                        <MenuItem eventKey="2">Recomendacion del dia</MenuItem>
-                        <MenuItem eventKey="3">Something else here</MenuItem>
+                    <NavDropdown eventKey={3} title="Recomendaciones">
+                        <MenuItem onSelect={this.navigateToTopList}>Top List</MenuItem>
+                        <MenuItem eventKey="3">Precio/Calidad</MenuItem>
+                        <MenuItem eventKey="3">Bodegas mejor puntuadas</MenuItem>
                     </NavDropdown>
                 </Nav>
                 <Nav right className="navbar-nav">
                     <NavDropdown eventKey={3} title={userMenu}>
-                        <MenuItem onSelect={this.navigate}>Perfil</MenuItem>
+                        <MenuItem onSelect={this.navigateToRegistro}>Perfil</MenuItem>
                         <MenuItem divider />
                         <MenuItem onSelect={this.logOut}>Log out</MenuItem>
                     </NavDropdown>
                 </Nav>
-
             </Navbar>
         );
     }

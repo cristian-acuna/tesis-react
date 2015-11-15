@@ -1,6 +1,7 @@
 var React = require('react');
 var Bootstrap = require('react-bootstrap');
 var Reflux = require('reflux');
+var Ajax = require('../data/ajax.jsx');
 
 var Input = require('react-bootstrap').Input;
 var Panel = require('react-bootstrap').Panel;
@@ -33,18 +34,10 @@ var Login = React.createClass({
             return;
         }
 
-        $.ajax({
-            url: "http://localhost:8080/login",
-            method: "GET",
-            contentType:"application/json",
-            dataType: "json",
-            data : this.formData
-        }).done(function( data ) {
-            UserActions.loginUser(data);
-        }).fail( function(xhr, textStatus, errorThrown) {
-            console.log("Fail:"+textStatus);
-        });
-    }
+        Ajax.call("http://localhost:8080/login","GET", this.formData,  this.setLoguedInUser);
+    },
+
+    setLoguedInUser: function (data) { UserActions.loginUser(data); }
 });
 
 module.exports = Login;

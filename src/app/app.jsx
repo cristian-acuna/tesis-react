@@ -5,6 +5,7 @@
     var UserStore = require('./stores/userstore');
     var VinoActions = require('./actions/vinoactions');
     var VinoStore = require('./stores/vinostore');
+    var Ajax = require('./data/ajax.jsx');
 
     var Navegacion = require('./components/navegacion.jsx');
     var Busqueda = require('./components/busqueda.jsx');
@@ -16,7 +17,7 @@
     var VerVino = require('./components/ver-vino.jsx');
     var NuevoVino = require('./components/nuevo-vino.jsx');
     var Wishlist = require('./components/wishlist.jsx');
-
+    var TopList = require('./components/topList.jsx');
 
     var Modal = require('react-bootstrap').Modal;
     var Router = require('react-router').Router;
@@ -36,46 +37,19 @@
             };
         },
 
+        setBodegas: function (data) { VinoActions.setBodegas(data); },
+
+        setUvas: function (data) { VinoActions.setUvas(data); },
+
+        setEdades: function (data) { VinoActions.setEdades(data); },
+
+        setTipos: function (data) { VinoActions.setTipos(data); },
+
         componentDidMount: function() {
-            $.ajax({
-                url: "http://localhost:8080/bodega/listar",
-                asyc: false,
-                method: "GET",
-                contentType:"application/json",
-                dataType: "json"
-            }).done(function( data ) {
-                VinoActions.setBodegas(data);
-            }.bind(this));
-
-            $.ajax({
-                url: "http://localhost:8080/vino/uvas",
-                asyc: false,
-                method: "GET",
-                contentType:"application/json",
-                dataType: "json"
-            }).done(function( data ) {
-                VinoActions.setUvas(data);
-            }.bind(this));
-
-            $.ajax({
-                url: "http://localhost:8080/vino/edades",
-                asyc: false,
-                method: "GET",
-                contentType:"application/json",
-                dataType: "json"
-            }).done(function( data ) {
-                VinoActions.setEdades(data);
-            }.bind(this));
-
-            $.ajax({
-                url: "http://localhost:8080/vino/tipos",
-                asyc: false,
-                method: "GET",
-                contentType:"application/json",
-                dataType: "json"
-            }).done(function( data ) {
-                VinoActions.setTipos(data);
-            }.bind(this));
+            Ajax.call("http://localhost:8080/bodega/listar", "GET", '', this.setBodegas);
+            Ajax.call("http://localhost:8080/vino/uvas", "GET", '', this.setUvas);
+            Ajax.call("http://localhost:8080/vino/edades", "GET", '', this.setEdades);
+            Ajax.call("http://localhost:8080/vino/tipos", "GET", '', this.setTipos);
         },
 
         onLoginUser: function(usuario) {
@@ -121,6 +95,7 @@
                 <Route path="/registro" component={Registro} />
                 <Route path="/ver" component={VerVino} />
                 <Route path="/wishlist" component={Wishlist} />
+                <Route path="/toplist" component={TopList} />
             </Route>
         </Router>
     ), document.getElementById('content'));

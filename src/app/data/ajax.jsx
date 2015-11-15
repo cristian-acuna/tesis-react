@@ -1,5 +1,3 @@
-'use strict';
-
 var Ajax = ({
 
     call: function (url, method, object, callback) {

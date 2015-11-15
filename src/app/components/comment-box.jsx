@@ -91,22 +91,6 @@ var CommentBox = React.createClass({
         });
         this.refs.commentInput.getInputDOMNode().value="";
     }
-
-/*    ajaxCall: function (url, method, object) {
-        $.ajax({
-            url: url,
-            async:false,
-            method: method,
-            contentType:"application/json",
-            dataType: "json",
-            data : object
-        }).done(function( data ) {
-            this.setState({
-                comentarios: data
-            });
-            this.refs.commentInput.getInputDOMNode().value="";
-        }.bind(this));
-    }*/
 });
 
 module.exports = CommentBox;

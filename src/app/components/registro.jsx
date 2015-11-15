@@ -1,6 +1,7 @@
 var React = require('react');
 var Bootstrap = require('react-bootstrap');
 var Reflux = require('reflux');
+var Ajax = require('../data/ajax.jsx');
 
 var Input = require('react-bootstrap').Input;
 var FormData = require('react-form-data');
@@ -15,6 +16,10 @@ var provincias = require('../data/provincias')
 var Registro = React.createClass({
 
     mixins: [ FormData, history],
+
+    getInitialState: function() {
+        return {data: []};
+    },
 
     render: function () {
         console.log(provincias);
@@ -42,25 +47,8 @@ var Registro = React.createClass({
     },
 
     handleSubmit: function() {
-        $.ajax({
-            url: "http://localhost:8080/registrar",
-            method: "GET",
-            contentType:"application/json",
-            dataType: "json",
-            data: this.formData
-        }).done(function( data ) {
-            return;
-        })
-            .fail( function(xhr, textStatus, errorThrown) {
-                console.log("Fail:"+textStatus);
-                return;
-            });
+        Ajax.call("http://localhost:8080/registrar","GET", this.formData, null);
         this.history.pushState(null, `/`);
-        return;
-    },
-
-    getInitialState: function() {
-        return {data: []};
     }
 });
 

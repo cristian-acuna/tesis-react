@@ -1,14 +1,15 @@
 var React = require('react');
 var Ajax = require('../data/ajax.jsx');
+var Bootstrap = require('react-bootstrap');
 
 var VinoStore = require('../stores/vinostore');
 
-var Input = require('react-bootstrap').Input;
-var MenuItem = require('react-bootstrap').MenuItem;
-var Dropdown = require('react-bootstrap').Dropdown;
-var Glyphicon = require('react-bootstrap').Glyphicon;
-var Button = require('react-bootstrap').Button;
-var Panel = require('react-bootstrap').Panel;
+var Input = Bootstrap.Input;
+var MenuItem = Bootstrap.MenuItem;
+var Dropdown = Bootstrap.Dropdown;
+var Glyphicon = Bootstrap.Glyphicon;
+var Button = Bootstrap.Button;
+var Panel = Bootstrap.Panel;
 var SelectedFilter = require('./selectedFIlter.jsx');
 var VinosTabla = require('./vinos-tabla.jsx');
 

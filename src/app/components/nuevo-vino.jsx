@@ -25,19 +25,6 @@ var NuevoVino = React.createClass({
 
     mixins: [ history, Reflux.listenTo(VinoStore, 'onVinoElegido')],
 
-    readURL: function (files) {
-        var self = this;
-        var reader = new FileReader();
-        var file = files[0];
-        reader.onloadend = function (upload) {
-            var codedImg = upload.target.result.replace("data:"+ file.type +";base64,", '');
-            self.setState({
-                image_uri: codedImg
-            });
-        };
-        reader.readAsDataURL(file);
-    },
-
     getInitialState: function() {
         return {
             image_uri: '',
@@ -51,11 +38,6 @@ var NuevoVino = React.createClass({
         };
     },
 
-    onVinoElegido: function(vino) {
-        this.setState({ vinoId: vino.id });
-            this.popularVino(vino);
-    },
-
     componentDidMount: function() {
         this.setState({
             bodegas: VinoStore.getBodegas(),
@@ -63,43 +45,6 @@ var NuevoVino = React.createClass({
             edades: VinoStore.getEdades(),
             tipos: VinoStore.getTipos()
         });
-    },
-
-    popularVino: function(vino) {
-        this.refs.inputNombre.getInputDOMNode().value = vino.nombre;
-        this.refs.inputDescripcion.getInputDOMNode().value = vino.descripcion;
-        this.refs.inputCosecha.getInputDOMNode().value = vino.cosecha;
-        this.refs.inputBodega.getInputDOMNode().value = vino.bodega.id;
-        this.refs.inputUva.getInputDOMNode().value = vino.uva.id;
-        this.refs.inputTipo.getInputDOMNode().value = vino.tipoVino.id;
-        this.refs.inputEdad.getInputDOMNode().value = vino.edad.id;
-        this.refs.inputGraduacion.getInputDOMNode().value = vino.graduacion;
-        if (vino.imagen) {
-            this.setState({
-                vinoImgs: [{}]
-            });
-            this.refs.inputImagen.getDOMNode().src = 'data:image/png;base64,'.concat(vino.imagen);
-        }
-    },
-
-    onSaveBodega: function(bodegas) {
-        this.setState({ bodegas: bodegas });
-        this.close();
-    },
-
-    onDrop: function (files) {
-        this.setState({
-            vinoImgs: files
-        });
-        this.readURL(files);
-    },
-
-    close() {
-        this.setState({ showModal: false });
-    },
-
-    open() {
-        this.setState({ showModal: true });
     },
 
     render: function () {
@@ -114,7 +59,7 @@ var NuevoVino = React.createClass({
 
         return (
             <div>
-                <Modal backdrop={false} keyboard={false} show={this.state.showModal} onHide={this.close}>
+                <Modal keyboard={false} show={this.state.showModal} onHide={this.close}>
                     <NuevaBodega onClose={this.close}/>
                 </Modal>
                 <Header return="/busqueda" text="Nuevo Vino" back="true" />
@@ -222,6 +167,61 @@ var NuevoVino = React.createClass({
         );
     },
 
+    readURL: function (files) {
+        var self = this;
+        var reader = new FileReader();
+        var file = files[0];
+        reader.onloadend = function (upload) {
+            var codedImg = upload.target.result.replace("data:"+ file.type +";base64,", '');
+            self.setState({
+                image_uri: codedImg
+            });
+        };
+        reader.readAsDataURL(file);
+    },
+
+    onVinoElegido: function(vino) {
+        this.setState({ vinoId: vino.id });
+            this.popularVino(vino);
+    },
+
+    popularVino: function(vino) {
+        this.refs.inputNombre.getInputDOMNode().value = vino.nombre;
+        this.refs.inputDescripcion.getInputDOMNode().value = vino.descripcion;
+        this.refs.inputCosecha.getInputDOMNode().value = vino.cosecha;
+        this.refs.inputBodega.getInputDOMNode().value = vino.bodega.id;
+        this.refs.inputUva.getInputDOMNode().value = vino.uva.id;
+        this.refs.inputTipo.getInputDOMNode().value = vino.tipoVino.id;
+        this.refs.inputEdad.getInputDOMNode().value = vino.edad.id;
+        this.refs.inputGraduacion.getInputDOMNode().value = vino.graduacion;
+        if (vino.imagen) {
+            this.setState({
+                vinoImgs: [{}]
+            });
+            this.refs.inputImagen.getDOMNode().src = 'data:image/png;base64,'.concat(vino.imagen);
+        }
+    },
+
+    onSaveBodega: function(bodegas) {
+        this.setState({ bodegas: bodegas });
+        this.close();
+    },
+
+    onDrop: function (files) {
+        this.setState({
+            vinoImgs: files
+        });
+        this.readURL(files);
+    },
+
+    close() {
+        this.setState({ showModal: false });
+    },
+
+    open() {
+        this.setState({ showModal: true });
+    },
+
     handleSubmit: function() {
         var request =
         {
@@ -242,7 +242,7 @@ var NuevoVino = React.createClass({
         this.history.pushState(null, `/busqueda`);
     },
 
-    setVino: function (data) { VinoActions.saveVino(data); },
+    setVino: function (data) { VinoActions.saveVino(data); }
 });
 
 module.exports = NuevoVino;

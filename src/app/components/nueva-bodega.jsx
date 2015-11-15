@@ -3,8 +3,11 @@ var Bootstrap = require('react-bootstrap');
 var moment = require('moment');
 var Ajax = require('../data/ajax.jsx');
 
-var Input = require('react-bootstrap').Input;
-var Panel = require('react-bootstrap').Panel;
+var Input = Bootstrap.Input;
+var Panel = Bootstrap.Panel;
+var Button = Bootstrap.Panel;
+var Glyphicon = Bootstrap.Glyphicon;
+
 var FormData = require('react-form-data');
 var Link = require('react-router').Link;
 var VinoActions = require('../actions/vinoactions');
@@ -25,7 +28,7 @@ var NuevaBodega = React.createClass({
         }
 
         return (
-            <Panel className="bodega-form" footer="nueva bodega">
+            <Panel footer="nueva bodega">
                 <form onChange={this.updateFormData} onSubmit={this.handleSubmit}>
                     <Input name="nombre" type="text" label="nombre" placeholder="Ingrese el nombre de la bodega"/>
                     <Input name="descripcion" type="text" label="reseña" placeholder="Ingrese una reseña"/>
@@ -39,6 +42,10 @@ var NuevaBodega = React.createClass({
                     </Input>
                     <Input name="pais" type="text" label="pais" placeholder="Ingrese un pais"/>
                     <Input name="link" type="text" label="link" placeholder="Ingrese un link"/>
+                    <a bsStyle="link" className="bodega-form--cancel" onClick={ this.props.onClose}>
+                        <Glyphicon style={{marginRight: 10 + 'px'}} glyph="remove" />
+                        cancelar
+                    </a>
                     <Input type="submit" className="btn btn-login" value="guardar"/>
                 </form>
             </Panel>
@@ -60,6 +67,7 @@ var NuevaBodega = React.createClass({
         };
 
         Ajax.call("http://localhost:8080/bodega/registrar","POST", JSON.stringify(request), this.setBodega);
+        this.props.onClose();
     },
 
     setBodega: function(data) { VinoActions.saveBodega(data); }

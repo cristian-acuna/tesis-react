@@ -47,7 +47,6 @@ var Busqueda = React.createClass({
                 </div>
                 <div className="busqueda-resultados">
                     <Buscador data={this.state.vinos}/>
-                    <div className="container-fluid">
                         <hr/>
                         <div className="row">
                             <div className="col-xs-12">
@@ -56,7 +55,6 @@ var Busqueda = React.createClass({
                                 </footer>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         );
