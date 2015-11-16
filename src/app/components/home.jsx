@@ -6,10 +6,10 @@ var Home = React.createClass({
     render: function () {
         return (
             <div>
-                <h1>Bienvenido! estas son las recomendaciones de hoy</h1>
-                <p className="lead">Use this document as a way to quickly start any new project.
+                <h1>Bienvenido nuevamente!</h1>
+                <p className="lead">Este es el home de su perfil de Somellier
                     <br />
-                    All you get is this text and a mostly barebones HTML document.</p>
+                    Aqui encontrara recomendaciones y noticias que lo mantendran actualizado diariamente.</p>
                     <Carousel />
             </div>
         );

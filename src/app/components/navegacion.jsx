@@ -25,10 +25,6 @@ var Navegacion = React.createClass({
         this.history.pushState(null, `/registro`);
     },
 
-    navigateToTopList: function() {
-        this.history.pushState(null, `/toplist`);
-    },
-
     logOut: function() {
         UserActions.logoutUser();
         this.history.pushState(null, `/`);
@@ -52,11 +48,7 @@ var Navegacion = React.createClass({
                     <Link className="bar-item" to={`/`}><span className="icon-nav glyphicon glyphicon-home"/>Home</Link>
                     <Link className="bar-item" to={`/busqueda`}><span className="icon-nav glyphicon glyphicon-search"/>Busqueda</Link>
                     <Link className="bar-item" to={`/wishlist`}><span className="icon-nav glyphicon glyphicon-glass"/>Wishlist</Link>
-                    <NavDropdown eventKey={3} title="Recomendaciones">
-                        <MenuItem onSelect={this.navigateToTopList}>Top List</MenuItem>
-                        <MenuItem eventKey="3">Precio/Calidad</MenuItem>
-                        <MenuItem eventKey="3">Bodegas mejor puntuadas</MenuItem>
-                    </NavDropdown>
+                    <Link className="bar-item" to={`/toplist`}><span className="icon-nav glyphicon glyphicon-knight"/>Top List</Link>
                 </Nav>
                 <Nav right className="navbar-nav">
                     <NavDropdown eventKey={3} title={userMenu}>

@@ -1,3 +1,14 @@
+.app-container {
+  background: rgba(237,237,237,1);
+  background: -moz-linear-gradient(top, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(237,237,237,1)), color-stop(53%, rgba(246,246,246,1)), color-stop(100%, rgba(255,255,255,1)));
+  background: -webkit-linear-gradient(top, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
+  background: -o-linear-gradient(top, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
+  background: -ms-linear-gradient(top, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
+  background: linear-gradient(to bottom, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededed', endColorstr='#ffffff', GradientType=0 );
+}
+
 .bar-item {
   color: #9d9d9d;
   display: inline-block;
@@ -87,7 +98,7 @@
 .carousel-component {
   margin: 0 auto;
   margin-top: 50px;
-  max-height:300px;
+  height: 279px;
   overflow:hidden;
   position: absolute;
   width: 800px;
@@ -110,7 +121,7 @@
   position: absolute;
   text-align: left;
   top: 51px;
-  width: 1109px;
+  width: 960px;
 }
 
 .header-title {
@@ -255,8 +266,10 @@
 
 .section-container {
   color: #787679;
-  padding: 0px 160px;
+  /*padding: 0px 160px;*/
   text-align: center;
+  width: 960px;
+  margin: 0 auto;
 }
 
 .vino-list-item {
@@ -272,21 +285,21 @@
   width: 250px;
 
   &--edit {
-    bottom: 10px;
-    color: mediumpurple !important;
-    left: 10px;
+    bottom: 29px;
+    color: grey !important;
+    left: 26px;
     position: absolute;
   }
 
   &--frame {
-    border-radius: 112px;
-    height: 174px;
+    border-radius: 109px;
+    height: 280px;
     overflow: hidden;
   }
 
   &--image {
     width: 177px;
-    opacity: 0.3;
+    opacity: 0.2;
   }
 
   &--button {

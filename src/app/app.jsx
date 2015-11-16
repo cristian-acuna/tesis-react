@@ -33,7 +33,7 @@
         getInitialState: function () {
             return {
                 userSession: {},
-                showModal: false
+                showModal: true
             };
         },
 
@@ -71,7 +71,7 @@
             const { pathname } = this.props.location
 
             return (
-                <div>
+                <div className="app-container">
                     <Modal backdrop={false} keyboard={false} show={this.state.showModal} className="login-modal" onHide={this.close}>
                         <Login onClose={this.close}/>
                     </Modal>

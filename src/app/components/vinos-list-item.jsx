@@ -24,7 +24,9 @@ var WineItem = React.createClass({
             <Button onClick={this.editarVino} className="vino-list-item--edit" bsStyle="link">
                 <Glyphicon glyph="pencil"/>
             </Button>
-        var decodedImg = 'data:image/png;base64,'.concat(this.props.data.imagen);
+        var decodedImg = this.props.data.imagen ?
+            "data:image/png;base64,".concat(this.props.data.imagen) :
+            "botella.jpg";
 
         if(this.props.data.nombre !== undefined) {
             content = (

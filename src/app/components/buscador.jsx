@@ -93,10 +93,10 @@ var InstantBox = React.createClass({
     },
 
     deleteFiltro:function(unselected){
-        var newData = this.state.selectedValues.slice(); //copy array
+        var newData = this.state.selectedValues.slice();
         this.state.selectedValues.map(function (item, index) {
-            item.filtro == unselected? newData.splice(index, 1):''}, this); //delete item
-        this.setState({selectedValues: newData}); //update state
+            item.filtro == unselected? newData.splice(index, 1):''}, this);
+        this.setState({selectedValues: newData});
         var stateObject = function() {
             returnObj = {};
             returnObj[unselected] = '';

@@ -1,13 +1,17 @@
 var React = require('react');
 var Reflux = require('reflux');
 var Ajax = require('../data/ajax.jsx');
+var VinoActions = require('../actions/vinoactions');
+var history = require('react-router').History;
 
 var Header = require('./header.jsx');
 var VinosTabla = require('./vinos-tabla.jsx');
 var Bootstrap = require('react-bootstrap');
 var PageHeader = Bootstrap.PageHeader;
+var Label = Bootstrap.Label;
 var Jumbotron = Bootstrap.Jumbotron;
 var Button = Bootstrap.Button;
+var Glyphicon = Bootstrap.Glyphicon;
 
 
 var TopList = React.createClass({
@@ -31,11 +35,11 @@ var TopList = React.createClass({
             <div>
                 <Header text="Top List" back="true"/>
                 <PageHeader className="ver-vino--header">Top List |
-                    <small className="ver-vino--descripcion-bodega">Los mejores vinos</small>
+                    <small className="ver-vino--descripcion-bodega"> Los mejores</small>
                 </PageHeader>
                 <div className="busqueda-filtro">
                     <div className="busqueda-descripcion">
-                        <h1>Estos son los vinos Top de Somellier</h1>
+                        <h1>Estos son los vinos mejor puntuados de Somellier</h1>
                         <p>Te presentamos los mejores 50 vinos de nuestra vinoteca de acuerdo a la opinion de nuestros usuarios y sus calificaciones. Recorda que esta lista es dinamica y se actualiza con cada voto que se ingrese.</p>
                     </div>
                 </div>
@@ -45,9 +49,10 @@ var TopList = React.createClass({
                                 <div className="top-list--item">
                                     <span className="top-list--position">{index+1}</span>
                                     <div className="top-list--info">
-                                        <h1>Hello, world!</h1>
-                                        <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-                                        <p><Button bsStyle="primary">Learn more</Button></p>
+                                        <h1 style={{color: 'white'}}>{row[0].nombre}</h1>
+                                        <p style={{width: 500 +'px'}}>{row[0].descripcion}</p>
+                                        <p className="top-list--rating"><Label style={{fontSize: 16 +'px'}}>Rating: {row[1]}</Label></p>
+                                        <p><Button className="top-list--boton" onClick={this.openDetail.bind(this, row[0])} bsStyle="primary">ver <Glyphicon glyph="chevron-right" /></Button></p>
                                     </div>
                                 </div>
                         )}.bind(this))}
@@ -62,6 +67,11 @@ var TopList = React.createClass({
                 </div>
             </div>
         );
+    },
+
+    openDetail:function(vino){
+        VinoActions.vinoElegido(vino);
+        this.history.pushState(null, `/ver`);
     }
 });
 

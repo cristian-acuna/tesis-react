@@ -4,6 +4,11 @@ var Reflux = require('reflux');
 var UserStore = require('../stores/userstore');
 var Ajax = require('../data/ajax.jsx');
 
+var ReactShare = require('react-share');
+var ShareButtons = ReactShare.ShareButtons;
+var ShareCounts = ReactShare.ShareCounts;
+var generateShareIcon = ReactShare.generateShareIcon;
+
 var PageHeader = Bootstrap.PageHeader;
 var Tooltip = Bootstrap.Tooltip;
 var OverlayTrigger = Bootstrap.OverlayTrigger;
@@ -47,6 +52,28 @@ var VerVino = React.createClass({
     },
 
     render: function () {
+        const {
+            FacebookShareButton,
+            GooglePlusShareButton,
+            LinkedinShareButton,
+            TwitterShareButton
+            } = ShareButtons;
+
+        const {
+            FacebookShareCount,
+            GooglePlusShareCount,
+            LinkedinShareCount,
+            TwitterShareCount
+            } = ShareCounts;
+
+        const FacebookIcon = generateShareIcon('facebook');
+        const TwitterIcon = generateShareIcon('twitter');
+        const GooglePlusIcon = generateShareIcon('google');
+        const LinkedinIcon = generateShareIcon('linkedin');
+
+        const shareUrl = 'http://localhost:3000/';
+        const title = 'Somellier';
+
         if (this.state.vino.bodega) {
             var bodega = this.state.vino.bodega;
             var ubicacion = bodega.residencia;
@@ -66,7 +93,7 @@ var VerVino = React.createClass({
                     </Button>;
             var decodedImg = this.state.vino.imagen ?
                 "data:image/png;base64,".concat(this.state.vino.imagen) :
-                "botella.jpg";
+                "botella.png";
 
             return (
                 <div>
@@ -123,6 +150,46 @@ var VerVino = React.createClass({
                                     <Rating fractions={2} onChange={this.onRate} initialRate={this.state.rating} />
                                 </div>
                             </OverlayTrigger>
+                            <div className="share-panel">
+                                <div className="share-panel--facebook">
+                                    <FacebookShareButton
+                                        url={shareUrl}
+                                        title={title}>
+                                        <FacebookIcon
+                                            size={32}
+                                            round={true} />
+                                    </FacebookShareButton>
+                                </div>
+
+                                <div className="share-panel--twitter">
+                                    <TwitterShareButton
+                                        url={shareUrl}
+                                        title={title}>
+                                        <TwitterIcon
+                                            size={32}
+                                            round={true} />
+                                    </TwitterShareButton>
+                                </div>
+
+                                <div className="share-panel--google">
+                                    <GooglePlusShareButton
+                                        url={shareUrl}>
+                                        <GooglePlusIcon
+                                            size={32}
+                                            round={true} />
+                                    </GooglePlusShareButton>
+                                </div>
+
+                                <div className="share-panel--linkedin">
+                                    <LinkedinShareButton
+                                        url={shareUrl}
+                                        title={title}>
+                                        <LinkedinIcon
+                                            size={32}
+                                            round={true} />
+                                    </LinkedinShareButton>
+                                </div>
+                            </div>
                         </div>
                         <div className="ver-vino--tipo">
                             <span className="ver-vino--tipo-etiqueta">tipo de vino</span>
